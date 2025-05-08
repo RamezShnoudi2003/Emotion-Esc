@@ -23,8 +23,7 @@
                 "glob": "**/*",
                 "input": "public"
               },
-              "src/assets",
-              "src/_redirects"
+              "src/assets"
             ],
             "styles": ["src/styles.css"],
             "scripts": []
@@ -79,8 +78,7 @@
                 "glob": "**/*",
                 "input": "public"
               },
-              "src/assets",
-              "src/_redirects"
+              "src/assets"
             ],
             "styles": ["src/styles.css"],
             "scripts": []
