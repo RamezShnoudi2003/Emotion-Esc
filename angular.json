@@ -53,12 +53,6 @@
           },
           "defaultConfiguration": "production"
         },
-        "postbuild": {
-          "builder": "@angular-devkit/build-angular:execute",
-          "options": {
-            "command": "cp _redirects dist/emotion-esc/"
-          }
-        },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
