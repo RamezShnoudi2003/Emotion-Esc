@@ -1,0 +1,88 @@
+<div class="title-show-container">
+
+    <div class="back-title-container">
+
+        <div class="masked-back-button" (click)="back()"></div>
+
+        <div class="title" *ngIf="type=='movies'">{{'showAllComponent.allMovies'|translate}}</div>
+        <div class="title" *ngIf="type=='songs'">{{'showAllComponent.allSongs'|translate}}</div>
+        <div class="title" *ngIf="type=='favorite-songs'">{{'libraryComponent.favoriteSongs'|translate}}</div>
+        <div class="title" *ngIf="type=='favorite-movies'">{{'libraryComponent.favoriteMovies'|translate}}</div>
+
+    </div>
+
+
+    <div class="next-prev-container" *ngIf="type=='songs' || type=='movies'">
+        <div class="masked-prev" (click)="prev()"></div>
+        <div class="masked-next" (click)="next()"></div>
+    </div>
+
+</div>
+
+<div class="flex-column-container">
+
+
+    <div class="spinner-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+    </div>
+
+
+    <div class="songs-container" *ngIf="type=='songs' && !isLoading && tracks.length!==0">
+
+        <ng-container *ngFor="let track of tracks">
+            <app-song-box [title]="track.name" [imageSrc]="track?.images?.[0]?.url||'/assets/Icons/no-image.svg'"
+                [artist]="track.artists" (ButtonEmitter)="playSong(track)">
+            </app-song-box>
+        </ng-container>
+
+    </div>
+
+    <div class="songs-container" *ngIf="type=='favorite-songs' && !isLoading && songItems.length!==0">
+
+        <ng-container *ngFor="let track of songItems">
+            <app-song-box [title]="track.title" [imageSrc]="track.itemImage||'/assets/Icons/no-image.svg'"
+                [artist]="track.artistOrDirector" (ButtonEmitter)="playSong(track)">
+            </app-song-box>
+        </ng-container>
+
+    </div>
+
+
+
+    <div class="alert-icon-container" *ngIf="type=='songs' && !isLoading && tracks.length===0">
+
+        <div class="masked-alert"></div>
+        {{'general.noMoreData'|translate}}
+
+    </div>
+
+    <div class="movies-container" *ngIf="type=='movies' && !isLoading && movies.length!==0">
+
+        <ng-container *ngFor="let movie of movies">
+            <app-movie-box [title]="movie.original_title" [publishDate]="movie.release_date"
+                [imageSrc]="movie.poster_path!==null?'https://image.tmdb.org/t/p/w500' + movie.poster_path :'/assets/Icons/no-image.svg'"
+                (ButtonEmitter)="takeToDescription(movie)"></app-movie-box>
+        </ng-container>
+
+    </div>
+
+
+    <div class="movies-container" *ngIf="type=='favorite-movies' && !isLoading && movieItems.length!==0">
+
+        <ng-container *ngFor="let item of movieItems">
+            <app-movie-box [title]="item.title" [publishDate]="item.releaseDate"
+                [imageSrc]="item.itemImage!==null?'https://image.tmdb.org/t/p/w500' + item.itemImage :'/assets/Icons/no-image.svg'"
+                (ButtonEmitter)="takeToDescription(item)"></app-movie-box>
+        </ng-container>
+
+    </div>
+
+    <div class="alert-icon-container" *ngIf="type=='movies' && !isLoading && movies.length===0">
+
+        <div class="masked-alert"></div>
+        {{'general.noMoreData'|translate}}
+
+    </div>
+
+
+</div>

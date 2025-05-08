@@ -1,0 +1,65 @@
+<div class="title-show-container">
+    <div class="title">{{'libraryComponent.favoriteSongs'|translate}}</div>
+
+
+    <app-button text="general.showAll" [color]="'primary'" (buttonClick)="showAll('favorite-songs')"
+        [disabled]="isSongsLoading"></app-button>
+</div>
+
+
+<div class="spinner-container" *ngIf="isSongsLoading">
+    <div class="spinner"></div>
+</div>
+
+
+<div class="songs-container">
+
+    <div *ngIf="songItems.length!==0 && !isSongsLoading">
+        <ng-container *ngFor="let track of songItems">
+            <app-song-box [title]="track.title" [imageSrc]="track.itemImage||'/assets/Icons/no-image.svg'"
+                [artist]="track.artistOrDirector" (ButtonEmitter)="playSong(track)">
+            </app-song-box>
+        </ng-container>
+    </div>
+
+    <div class="alert-icon-container" *ngIf="!isSongsLoading && songItems.length===0">
+
+        <div class="masked-alert"></div>
+        {{this.noSongsData}}
+    </div>
+
+
+</div>
+
+<div class="title-show-container">
+    <div class="title">{{'libraryComponent.favoriteMovies'|translate}}</div>
+    <app-button text="general.showAll" [color]="'primary'" (buttonClick)="showAll('favorite-movies')"
+        [disabled]="isMoviesLoading"></app-button>
+</div>
+
+
+<div class="spinner-container" *ngIf="isMoviesLoading">
+    <div class="spinner"></div>
+</div>
+
+
+<div class="movies-container">
+
+    <div *ngIf="movieItems.length!==0 && !isMoviesLoading">
+
+        <ng-container *ngFor="let item of movieItems">
+            <app-movie-box [title]="item.title" [publishDate]="item.releaseDate"
+                [imageSrc]="item.itemImage!==null?'https://image.tmdb.org/t/p/w500' + item.itemImage :'/assets/Icons/no-image.svg'"
+                (ButtonEmitter)="takeToDescription(item)"></app-movie-box>
+        </ng-container>
+
+    </div>
+
+    <div class="alert-icon-container" *ngIf="!isMoviesLoading && movieItems.length===0">
+
+        <div class="masked-alert"></div>
+        {{this.noMoviesData}}
+    </div>
+
+
+</div>

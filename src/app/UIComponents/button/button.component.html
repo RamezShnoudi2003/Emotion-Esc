@@ -1,0 +1,15 @@
+<div class="btn-container">
+
+    <button class="inner-btn-container" [disabled]="disabled" type="{{type}}" class="btn-{{color}}"
+        (click)="onClick($event)">
+
+        <span *ngIf="!isBusy">
+
+
+            {{text|translate}}
+        </span>
+
+        <div class="spinner" *ngIf="isBusy"></div>
+
+    </button>
+</div>

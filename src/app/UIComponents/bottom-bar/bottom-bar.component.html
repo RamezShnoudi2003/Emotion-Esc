@@ -1,0 +1,14 @@
+<div class="bottom-tabs-container" *ngIf="isUserLoggedIn">
+
+    <ng-container *ngFor="let tab of tabs">
+
+        <div class="icon-title-container" (click)="navigate(tab)" [class.selected]="tab.isSelected">
+
+            <div class="masked-icon" *ngIf="tab.isSelected" style="-webkit-mask-image: url({{tab.filledIcon}});"></div>
+            <div class="masked-icon" *ngIf="!tab.isSelected" style="-webkit-mask-image: url({{tab.icon}});"></div>
+            <div class="tab-title" [class.selected]="tab.isSelected" *ngIf="lastSetLang=='en'">{{tab.titleEN}}</div>
+            <div class="tab-title" [class.selected]="tab.isSelected" *ngIf="lastSetLang=='ar'">{{tab.titleAR}}</div>
+        </div>
+    </ng-container>
+
+</div>

@@ -1,0 +1,67 @@
+<div class="card-container" *ngIf="isLoggedIn">
+
+
+    <div class="title-close-container">
+
+        <div class="title">Playing Now </div>
+
+        <div class="masked-close" (click)="closeCard()"></div>
+
+    </div>
+
+
+
+
+
+    <img class="song-image" [src]="selectedSong?.images?.[0]?.url || '/assets/Icons/no-image.svg'" alt="">
+
+
+    <div class="song-artist-names-add-container">
+
+        <div class="song-artist-names">
+            <div class="song-name">{{selectedSong?.name}}</div>
+            <div class="artist-name">{{selectedSong?.artists}}</div>
+        </div>
+
+        <div class="masked-favorite" (click)="handleAddRemoveToFromLibrary()"
+            [class.added-to-faves]="selectedSong.isSelected">
+        </div>
+
+
+    </div>
+
+    <div class=" playbar-container">
+        <div class="masked-progress-bar"></div>
+        <div class="buttons-container">
+            <div class="masked-shuffle"></div>
+            <div class="masked-prev"></div>
+
+            <div class="play-btn-container">
+                <div class="masked-play"></div>
+            </div>
+
+            <div class="masked-next"></div>
+            <div class="masked-order"></div>
+        </div>
+    </div>
+
+    <!-- <div class="about-artist-container">
+
+            <div class="image-title-container">
+
+
+                <div class="about-artist-title">About The Artist</div>
+
+                <img class="artist-image" src="../../../assets/images/song-test.svg" alt="">
+
+            </div>
+
+            <div class="artist-info">
+                <div class="artist-sub-name">Eminem</div>
+                <div class="followers">1000000000 followers</div>
+                <div class="spotify">on spotify</div>
+
+            </div>
+
+        </div> -->
+</div>

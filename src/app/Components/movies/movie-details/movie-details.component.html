@@ -1,0 +1,85 @@
+<div class="title-show-container" (click)="back()">
+    <div class="masked-back-button"></div>
+</div>
+
+
+<div class="spinner-container" *ngIf="isDetailsLoading">
+    <div class="spinner"></div>
+</div>
+
+<div class="movie-info-container" *ngIf="!isDetailsLoading">
+
+
+    <img *ngIf="movieDetails.backdrop_path!==null" [src]="'https://image.tmdb.org/t/p/w500'+ movieDetails.backdrop_path"
+        alt="movie">
+
+    <div class="masked-no-image" *ngIf="movieDetails.backdrop_path===null"></div>
+
+    <div class="info-container">
+
+        <div class="movie-title">{{movieDetails.original_title}}</div>
+
+        <div class="sub-info-container">
+            <div class="movie-duration">
+                {{movieDetails.release_date}} | {{formattedDuration}}
+                <span *ngIf="language=='ar'">س</span>
+                <span *ngIf="language=='en'">H</span>
+            </div>
+
+            <div class="movie-genre-container">
+                <span class="genre" *ngFor="let genre of genres">{{genre.name}}</span>
+            </div>
+
+            <div class="IMDB-rating">
+                <span class="rating">
+                    {{'moviesDetailsComponent.popularity'|translate}}
+                </span>
+                {{movieDetails.popularity}}
+            </div>
+        </div>
+
+        <div class="movie-overview">
+            <b>
+
+                {{'moviesDetailsComponent.description'|translate}}
+            </b>
+            {{state.overview || movieDetails.overview}}
+        </div>
+
+        <div class="buttons-container">
+            <app-button text="moviesDetailsComponent.watchTrailer" color="primary"
+                (buttonClick)="watchTrailer(movieDetails)" *ngIf="showTrailerBtn"></app-button>
+
+            <div class="masked-favorite" (click)="handleAddRemoveToFromLibrary()"
+                [class.added-to-faves]="movieDetails.isSelected">
+            </div>
+            <!-- 
+            <app-button text="moviesDetailsComponent.addToLibrary" color="outline"
+                (buttonClick)="addItemToLibrary(movieDetails)"></app-button> -->
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="title-show-container">
+    <div class="title">Quick Mood Shift</div>
+    <app-button text="show all" [color]="'primary'" (buttonClick)="showAll('movies')"
+        [disabled]="isRecommendationsLoading"></app-button>
+</div>
+
+
+<div class="spinner-container" *ngIf="isRecommendationsLoading">
+    <div class="spinner"></div>
+</div>
+
+<div class="movies-container">
+    <span *ngFor="let item of movieRecommendations">
+        <app-movie-box [title]="item.original_title" [publishDate]="item.release_date"
+            [imageSrc]="'https://image.tmdb.org/t/p/w500'+item.poster_path"
+            (ButtonEmitter)="takeToDescription(item)"></app-movie-box>
+    </span>
+
+</div>

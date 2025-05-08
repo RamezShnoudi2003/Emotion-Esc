@@ -1,0 +1,65 @@
+<div class="form-image-container">
+
+
+    <img class="face-img" src="/assets/images/face.webp" alt="face">
+
+    <form [formGroup]="signupFormGroup" *ngIf="!isSignedUp">
+
+        <span class="emotion-form-title">EmotionEsc</span>
+
+
+        <span class="sub-title">{{'signUpComponent.discover'|translate}}</span>
+
+
+        <app-input label="signUpComponent.fullname" formControlName="fullName" type="text"
+            placeholder="signUpComponent.enterFullname"></app-input>
+
+        <app-input label="signUpComponent.email" formControlName="email" type="Email"
+            placeholder="signUpComponent.enterEmail"></app-input>
+
+        <app-input label="signUpComponent.password" formControlName="password" type="password"
+            placeholder="signUpComponent.enterPassword"></app-input>
+
+        <app-input label="signUpComponent.confirmPassword" formControlName="confirmPassword" type="password"
+            placeholder="signUpComponent.enterConfirmPassword"></app-input>
+
+        <app-button [isBusy]="isSignupBtnLoading" [disabled]="isSignUpBtnDisabled || isSignupBtnLoading"
+            text="signUpComponent.signUp" type="submit" color="primary" (buttonClick)="startSignup()"></app-button>
+
+        <div class="link-container">
+            {{'signUpComponent.alreadyHaveAccount'|translate}} <a
+                [routerLink]="'/login'">{{'loginComponent.login'|translate}}</a>
+        </div>
+
+    </form>
+
+
+    <form [formGroup]="otpFormGroup" *ngIf="isSignedUp && !isCodeEntered">
+
+        <div class="masked-back-button" (click)="backToSignup()"></div>
+
+
+        <span class="emotion-form-title">EmotionEsc</span>
+
+
+        <span class="sub-title">{{'signUpComponent.enter6Digits'|translate }}</span>
+
+        <app-input formControlName="otp" type="tel" placeholder="signUpComponent.enterCode"></app-input>
+
+        <app-button [disabled]="isVerificationBtnDisabled || isVerificationBtnLoading" text="general.verify"
+            type="submit" color="primary" (buttonClick)="enterOTP()"></app-button>
+
+        <div class="link-container">
+
+            {{'signUpComponent.resendCode'|translate }}
+
+            <a *ngIf="!isResendBtnDisabled" (click)="resendOTP()">
+                {{'signUpComponent.sendCode'|translate }}
+            </a>
+
+            <a *ngIf="isResendBtnDisabled">[ {{ count }} ] </a>
+        </div>
+
+    </form>
+
+</div>

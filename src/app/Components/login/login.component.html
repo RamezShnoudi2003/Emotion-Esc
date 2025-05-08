@@ -1,0 +1,79 @@
+<div class="form-image-container">
+
+    <img class="face-img" src="/assets/images/face.webp" alt="face">
+
+    <form [formGroup]="loginFormGroup" *ngIf="!isForgotPassClicked">
+        <div class="masked-back-button" (click)="backtoOnBoarding()"></div>
+
+        <span class="emotion-form-title">EmotionEsc</span>
+
+
+        <span class="sub-title">{{'loginComponent.welcome'|translate}}</span>
+
+        <span class="sub-title">
+            {{'loginComponent.enterInfo'|translate}}
+        </span>
+        <app-input label="loginComponent.email" formControlName="email" type="email"
+            placeholder="loginComponent.enterEmail"></app-input>
+        <app-input label="loginComponent.password" formControlName="password" type="password"
+            placeholder="loginComponent.enterPassword"></app-input>
+
+        <a (click)="forgotPass()">{{'loginComponent.forgotPassword'|translate}} </a>
+
+        <app-button [isBusy]="isLoginBtnLoading" [disabled]="isLoginBtnDisabled || isLoginBtnLoading" type="submit"
+            text="loginComponent.login" color="primary" (buttonClick)="login()"></app-button>
+
+        <div class="link-container">
+            {{'loginComponent.dontHaveAccount'|translate}}
+            <a [routerLink]="'/sign-up'">{{'signUpComponent.signUp'|translate}} </a>
+        </div>
+
+    </form>
+
+    <form *ngIf="isForgotPassClicked" (submit)="preventSubmission($event)">
+        <div class="masked-back-button" (click)="backtoLogin()"></div>
+
+        <span class="emotion-form-title">EmotionEsc</span>
+
+        <span class="sub-title">
+            Reset forgotten password
+        </span>
+
+        <div [formGroup]="emailFormGroup">
+
+
+            <app-input label="loginComponent.email" formControlName="email" type="email"
+                placeholder="loginComponent.enterEmail" [disabled]="isEmailEntered"
+                (enterPressed)="enterEmail()"></app-input>
+
+            <app-button *ngIf="!isEmailEntered" [isBusy]="isEmailBtnLoading"
+                [disabled]="isEmailBtnLoading||isEmailBtnDisabled" text="Enter" color="primary"
+                (buttonClick)="enterEmail()" type="button"></app-button>
+
+            <div [formGroup]="resetPasswordFormGroup" *ngIf="isEmailEntered">
+
+                <app-input label="loginComponent.otp" formControlName="code" type="tel"
+                    placeholder="loginComponent.enterOTP"></app-input>
+
+                <app-input label="loginComponent.newPassword" formControlName="newPassword" type="password"
+                    placeholder="loginComponent.newPassword"></app-input>
+
+                <app-input label="loginComponent.confirmPassword" formControlName="confirmPassword" type="password"
+                    placeholder="loginComponent.confirmPassword"></app-input>
+
+                <app-button [isBusy]="isResetBtnLoading" [disabled]="isResetBtnLoading||isResetBtnDisabled"
+                    type="button" text="Save" color="primary" (buttonClick)="resetForgottenPassword()"></app-button>
+
+
+            </div>
+        </div>
+
+
+
+    </form>
+
+</div>
+
+
+<!-- 
+    <app-button type="submit" text="take to reset" color="primary" (buttonClick)="takeToResetPass()"></app-button>-->

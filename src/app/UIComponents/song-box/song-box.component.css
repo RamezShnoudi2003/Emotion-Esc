@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    padding: 0.5rem;
+    /* background-color: blue; */
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+
+img {
+    width: 12rem;
+    height: 12rem;
+    border-radius: 0.5rem;
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.song-title {
+    font-weight: 700;
+    text-wrap: wrap;
+}
+
+.artist {
+    font-weight: 500;
+    opacity: 0.5;
+}

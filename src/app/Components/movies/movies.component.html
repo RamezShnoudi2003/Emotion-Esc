@@ -1,0 +1,62 @@
+<div class="title-show-container" *ngIf="emotion.length!==0">
+    <div class="title">{{'general.emotion'|translate}}: {{emotion}}</div>
+
+    <!-- <app-button text="general.showAll" [color]="'primary'" (buttonClick)="showAll('movies')"
+        [disabled]="isMoviesLoading"></app-button> -->
+
+    <div class="next-prev-container">
+        <div class="masked-prev" (click)="prev()"></div>
+        <div class="masked-next" (click)="next()"></div>
+    </div>
+
+</div>
+
+
+<div class="right-left-container" *ngIf="emotion.length===0">
+    <div class="left-container">
+        <img class="detect-face-image" src="/assets/images/detect-face.png"
+            alt="Onboarding image showing playlists and movies">
+
+    </div>
+
+    <div class="right-container">
+
+        <div class="camera-text-container">
+
+            <span>{{'songsComponent.letsEsc'|translate}}</span>
+            <span class="cam-hint">{{'songsComponent.openCam'|translate}}</span>
+
+        </div>
+
+        <div class="camera-background" (click)="letsEsc()">
+            <div class="masked-camera"></div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<ng-container *ngIf="emotion.length!==0">
+
+    <div class="spinner-container" *ngIf="isMoviesLoading">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="movies-container" *ngIf="!isMoviesLoading && movieRecommendations.length!==0">
+
+        <ng-container *ngFor="let item of movieRecommendations">
+            <app-movie-box [title]="item.original_title" [publishDate]="item.release_date"
+                [imageSrc]="item.poster_path!==null?'https://image.tmdb.org/t/p/w500' + item.poster_path :'/assets/Icons/no-image.svg'"
+                (ButtonEmitter)="takeToDescription(item)"></app-movie-box>
+        </ng-container>
+
+    </div>
+
+    <div class="alert-icon-container" *ngIf="!isMoviesLoading && movieRecommendations.length===0">
+
+        <div class="masked-alert"></div>
+        {{'general.noMoreData'|translate}}
+    </div>
+
+</ng-container>

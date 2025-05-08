@@ -1,0 +1,102 @@
+{
+  "homeComponent": {
+    "home": "الرئيسية",
+    "topSongs": "أفضل الاغاني اليوم",
+    "movieRecommendations": "اقتراحات الأفلام"
+  },
+  "songsComponent": {
+    "songs": "الأغاني",
+    "openCam": "افتح الكاميرا لاكتشاف عواطفك",
+    "letsEsc": "لنهرب"
+  },
+  "moviesComponent": {
+    "movies": "الأفلام",
+    "openCam": "افتح الكاميرا لاكتشاف عواطفك",
+    "letsEsc": "لنهرب"
+  },
+  "moviesDetailsComponent": {
+    "description": "الوصف",
+    "watchTrailer": "شاهد العرض الترويجي",
+    "addToLibrary": "أضف إلى المكتبة",
+    "popularity": "الشعبية"
+  },
+  "libraryComponent": {
+    "library": "المكتبة",
+    "favoriteSongs": "الأغاني المفضلة",
+    "favoriteMovies": "الأفلام المفضلة"
+  },
+  "profileComponent": {
+    "profile": "الملف الشخصي",
+    "welcome": "مرحبًا , ",
+    "email": "البريد الإلكتروني",
+    "username": "اسم المستخدم",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "editProfile": "تعديل الملف الشخصي",
+    "fullName": "الاسم الكامل",
+    "resetPasswordTab": "تعديل كلمة المرور",
+    "profileTab": "تعديل الملف الشخصي"
+  },
+  "onBoardingComponent": {
+    "onBoarding": "التسجيل الأولي",
+    "discover": "\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 استكشف",
+    "Entertainment": "الترفيه",
+    "tailordToYou": "مصمم خصيصًا لك",
+    "onBoardDiscoverSongs": "اكتشف قائمتك الموسيقية المثالية واستمع إليها فورًا باستخدام Spotify",
+    "onBoardDiscoverMovies": "وجهك يروي القصة، دعنا نقترح الفيلم المثالي لك"
+  },
+  "loginComponent": {
+    "login": "تسجيل الدخول",
+    "welcome": "مرحبًا",
+    "enterInfo": "أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى حسابك",
+    "username": "اسم المستخدم",
+    "enterUsername": "أدخل اسم المستخدم",
+    "email": "البريد الإلكتروني",
+    "enterEmail": "أدخل بريدك الإلكتروني",
+    "password": "كلمة المرور",
+    "enterPassword": "أدخل كلمة المرور",
+    "forgotPassword": "هل نسيت كلمة المرور ؟",
+    "dontHaveAccount": "ليس لديك حساب ؟",
+    "otp": "رمز التحقق",
+    "enterOTP": "ادخل رمز التحقق",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور"
+  },
+  "signUpComponent": {
+    "signUp": "إنشاء حساب",
+    "username": "اسم المستخدم",
+    "enterUsername": "أدخل اسم المستخدم",
+    "fullname": "الاسم الكامل",
+    "enterFullname": "ادخل الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "enterEmail": "أدخل بريدك الإلكتروني",
+    "password": "كلمة المرور",
+    "enterPassword": "أدخل كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "enterConfirmPassword": "أدخل تأكيد كلمة المرور",
+    "alreadyHaveAccount": "هل لديك حساب ؟",
+    "discover": "اكتشف الاغاني والأفلام كما لم تفعل من قبل",
+    "enterCode": "ادخل رمز التحقق",
+    "enter6Digits": "أدخل رمز التحقق المكون من 6 أرقام الذي تم إرساله إلى بريدك الإلكتروني",
+    "resendCode": "اعادة ارسال رمز التحقق ؟",
+    "sendCode": "ارسال"
+  },
+  "showAllComponent": {
+    "showAll": "عرض الكل",
+    "allSongs": "جميع الأغاني",
+    "allMovies": "جميع الأفلام"
+  },
+  "topBarComponent": {
+    "getStarted": "ابدأ",
+    "detectEmotionAgain": "اكتشف العاطفة مرة أخرى ؟",
+    "emotionsReshape": "حيث تُعاد تشكيل العواطف ! "
+  },
+  "general": {
+    "save": "تخزين",
+    "showAll": "عرض الكل",
+    "emotion": "العاطفة",
+    "verify": "تحقق",
+    "noMoreData": "لا مزيد من البيانات"
+  }
+}

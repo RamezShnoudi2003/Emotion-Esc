@@ -1,0 +1,81 @@
+<!-- show tob bar everywhere except for login and sign up -->
+<div class="top-bar-container" *ngIf="latestRoute !== '/login' && latestRoute !== '/sign-up'">
+
+    <!-- Topbar Title -->
+    <div class="emotionEsc" (click)="navigate(tabs[0])">EmotionEsc</div>
+
+    <!-- if user isLoggedIn -->
+    <ng-container *ngIf="isUserLoggedIn">
+
+
+        <div class="tabs-container">
+
+            <ng-container *ngFor="let tab of tabs">
+                <div class="tab" [class.selected]="tab.isSelected" (click)="navigate(tab)" *ngIf="selectedLang=='en'">
+                    {{tab.titleEN}}</div>
+                <div class="tab" [class.selected]="tab.isSelected" (click)="navigate(tab)" *ngIf="selectedLang=='ar'">
+                    {{tab.titleAR}}</div>
+            </ng-container>
+
+        </div>
+
+        <!-- if profile tab is not selected we show these -->
+        <div class="detect-emotion-again-container" *ngIf="!this.tabs[4].isSelected && showDetection"
+            (click)="letsEsc()">
+
+            <div class="detect-emotion-again" (click)="letsEsc()">{{'topBarComponent.detectEmotionAgain'|translate}}
+            </div>
+
+            <div class="camera-background">
+                <div class="masked-camera"></div>
+            </div>
+
+        </div>
+
+        <div class="where-emotions-reshape" *ngIf="!this.tabs[4].isSelected && !showDetection">
+            {{'topBarComponent.emotionsReshape'|translate}}
+        </div>
+
+
+        <!-- only if profile tab is selected we show these -->
+        <div class="lang-logout-container" *ngIf="this.tabs[4].isSelected">
+            <!-- <div class="lang-logout-container" *ngIf="this.tabs[4].isSelected"> -->
+
+            <div class="lang-container">
+
+                <div class="tab en" (click)="updateLang('en')" [class.selected]="selectedLang=='en'">En</div>
+                <div class="tab ar" (click)="updateLang('ar')" [class.selected]="selectedLang=='ar'">العربية</div>
+
+            </div>
+
+            <div class="logout-container" (click)="logout()">
+                <div class="logout-background">
+                    <div class="masked-logout"></div>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+
+    <!-- if user is not logged in and latest route was on-boarding -->
+    <ng-container *ngIf="!isUserLoggedIn && latestRoute=='/on-boarding'">
+
+        <div class="lang-button-container">
+
+            <div class="lang-container">
+
+                <div class="tab en" (click)="updateLang('en')" [class.selected]="selectedLang=='en'">En</div>
+                <div class="tab ar" (click)="updateLang('ar')" [class.selected]="selectedLang=='ar'">العربية</div>
+
+            </div>
+
+            <app-button type="button" text="topBarComponent.getStarted" color="primary"
+                (buttonClick)="getStarted()"></app-button>
+
+
+        </div>
+
+
+    </ng-container>
+
+</div>

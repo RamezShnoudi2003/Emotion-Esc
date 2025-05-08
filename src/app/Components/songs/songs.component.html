@@ -1,0 +1,61 @@
+<div class="title-show-container" *ngIf=" emotion.length!==0">
+
+    <div class="title">{{'general.emotion'|translate}}: {{emotion}}</div>
+
+    <div class="next-prev-container">
+        <div class="masked-prev" (click)="prev()"></div>
+        <div class="masked-next" (click)="next()"></div>
+    </div>
+    <!-- <app-button text="general.showAll" [color]="'primary'" (buttonClick)="showAll('songs')"
+        [disabled]="isSongsLoading"></app-button> -->
+
+</div>
+
+
+<div class="right-left-container" *ngIf="emotion.length===0">
+
+    <div class="left-container">
+        <img class="detect-face-image" src="/assets/images/detect-face.png" alt="Onboarding">
+    </div>
+
+    <div class="right-container">
+
+        <div class="camera-text-container">
+
+            <span>{{'songsComponent.letsEsc'|translate}}</span>
+            <span class="cam-hint">{{'songsComponent.openCam'|translate}}</span>
+
+        </div>
+
+        <div class="camera-background" (click)="letsEsc()">
+            <div class="masked-camera"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<ng-container *ngIf="emotion.length!==0">
+
+    <div class="spinner-container" *ngIf="isSongsLoading">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="songs-container" *ngIf="!isSongsLoading && tracks.length!==0">
+
+        <ng-container *ngFor="let track of tracks">
+            <app-song-box [title]="track.name" [imageSrc]="track?.images?.[0]?.url||'/assets/Icons/no-image.svg'"
+                [artist]="track.artists" (ButtonEmitter)="playSong(track)">
+            </app-song-box>
+        </ng-container>
+
+    </div>
+
+    <div class="alert-icon-container" *ngIf="!isSongsLoading && tracks.length===0">
+
+        <div class="masked-alert"></div>
+        {{'general.noMoreData'|translate}}
+
+    </div>
+
+</ng-container>

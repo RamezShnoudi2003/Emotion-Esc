@@ -1,0 +1,42 @@
+<ng-container *ngIf="type !== 'tel'; else telInput">
+
+    <div class="input-container">
+        <label>{{label|translate}}</label>
+        <input [disabled]="disabled" value="{{text}}" type="{{type}}" placeholder="{{placeholder|translate}}"
+            (input)="onInputChange($event)" (keydown)="onKeyDown($event)">
+    </div>
+
+    <span class="validation-container">
+
+        <span class="validation-text" *ngIf="ngControl.control?.dirty && this.ngControl.control?.errors?.['required']">
+            Field Required
+        </span>
+
+        <span class="validation-text" *ngIf="ngControl.control?.dirty && this.ngControl.control?.errors?.['email']">
+            Invalid Email
+        </span>
+
+
+        <span class="validation-text" *ngIf="ngControl.control?.dirty && ngControl.control?.errors?.['minlength']">
+            Minimum {{ ngControl.control?.errors?.['minlength']?.requiredLength }} characters required.
+        </span>
+
+    </span>
+
+</ng-container>
+
+<ng-template #telInput>
+
+    <div class="input-container">
+        <label>{{label|translate}}</label>
+        <input [disabled]="disabled" value="{{text}}" type="{{type}}" placeholder="{{placeholder|translate}}"
+            (keydown)="onKeyDown($event)" (input)="onInputChange($event)" maxlength="6">
+    </div>
+    <span class="validation-container">
+
+        <span class="validation-text" *ngIf="ngControl.control?.dirty && ngControl.control?.errors?.['minlength']">
+            Minimum {{ ngControl.control?.errors?.['minlength']?.requiredLength }} characters required.
+        </span>
+    </span>
+
+</ng-template>

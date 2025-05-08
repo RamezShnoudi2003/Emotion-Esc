@@ -1,0 +1,72 @@
+.btn-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.2rem;
+}
+
+button {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 1rem;
+    border-radius: 3rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    border: 2px solid var(--color-primary);
+    width: 100%;
+}
+
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+}
+
+.btn-outline {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+}
+
+button:disabled {
+    background-color: var(--color-secondary);
+    cursor: not-allowed;
+    color: var(--color-text);
+    border: 2px solid var(--color-secondary);
+}
+
+button:disabled:hover {
+    background-color: var(--color-secondary);
+    cursor: not-allowed;
+    color: var(--color-text);
+    border: 2px solid var(--color-secondary);
+}
+
+.inner-btn-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.spinner {
+    width: 0.6rem;
+    height: 0.6rem;
+    border: 3px solid black;
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;    
+}

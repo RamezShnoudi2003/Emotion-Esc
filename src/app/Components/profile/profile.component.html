@@ -1,0 +1,74 @@
+<div class="profile-screen-container">
+
+    <div class="content-container" *ngIf="!showResetForm">
+
+
+        <form [formGroup]="profileFormGroup">
+
+            <div class="welcome-container">
+                <span class="title">
+                    {{'profileComponent.welcome'|translate}}
+                </span>
+                <span class="username">{{firstName}}</span>
+            </div>
+
+            <div class="profile-tabs-container">
+                <div class="tab profile-tab" [class.active]="!showResetForm" (click)="showResetForm = false">
+                    {{ 'profileComponent.profileTab' | translate }}
+                </div>
+
+                <div class="tab reset-pass-tab" [class.active]="showResetForm" (click)="showResetForm = true">
+                    {{ 'profileComponent.resetPasswordTab' | translate }}
+                </div>
+            </div>
+
+            <app-input label="Full name" type="text" formControlName="fullName"></app-input>
+
+            <app-input label="{{'profileComponent.email'|translate}}" type="text" formControlName="email"></app-input>
+
+            <app-button [isBusy]="isProfileBtnLoading" [disabled]="isProfileBtnLoading || isProfileBtnDisabled"
+                type="submit" text="general.save" (buttonClick)="updateProfile()" color="primary"></app-button>
+        </form>
+
+    </div>
+
+    <div class="content-container" *ngIf="showResetForm">
+
+
+        <form [formGroup]="passwordFormGroup">
+
+            <div class="welcome-container">
+                <span class="title">
+                    {{'profileComponent.welcome'|translate}}
+                </span>
+                <span class="username">{{firstName}}</span>
+            </div>
+
+            <div class="profile-tabs-container">
+                <div class="tab profile-tab" [class.active]="!showResetForm" (click)="showResetForm = false">
+                    {{ 'profileComponent.profileTab' | translate }}
+                </div>
+
+                <div class="tab reset-pass-tab" [class.active]="showResetForm" (click)="showResetForm = true">
+                    {{ 'profileComponent.resetPasswordTab' | translate }}
+                </div>
+            </div>
+
+
+            <app-input label="{{'profileComponent.currentPassword'|translate}}" type="password"
+                placeholder="Enter current password" formControlName="currentPassword"></app-input>
+
+            <app-input formControlName="newPassword" label="{{'profileComponent.newPassword'|translate}}"
+                type="password" placeholder="Enter new password"></app-input>
+
+            <app-input label="{{'profileComponent.confirmPassword'|translate}}" type="password"
+                placeholder="Confirm new password" formControlName="confirmPassword"></app-input>
+
+
+            <app-button [isBusy]="isPasswordBtnLoading" [disabled]="isPasswordBtnLoading || isPasswordBtnDisabled"
+                type="submit" text="general.save" (buttonClick)="updatePassword()" color="primary"></app-button>
+
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,208 @@
+.card-container {
+    height: 100%;
+    width: fit-content;
+    background-color: #D9D6D6;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    padding: 1rem;
+    border: 2px solid black;
+    border-radius: 1rem;
+}
+
+
+.title-close-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+
+.song-artist-names-add-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.song-artist-names{
+width: 20rem;
+}
+
+
+.song-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.artist-name {
+    color: grey;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+.masked-favorite {
+    mask-image: url(../../../assets/Icons/close.svg);
+    -webkit-mask-image: url(../../../assets/Icons/close.svg);
+    mask-size: cover;
+    -webkit-mask-size: cover;
+    background-color: black;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+}
+
+.masked-favorite {
+    mask-image: url(../../../assets/Icons/favorite.svg);
+    -webkit-mask-image: url(../../../assets/Icons/favorite.svg);
+}
+
+
+.masked-favorite.added-to-faves {
+    mask-image: url(../../../assets/Icons/favorite-filled.svg);
+    -webkit-mask-image: url(../../../assets/Icons/favorite-filled.svg);
+
+}
+
+.playbar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.5rem;
+   
+}
+
+.masked-progress-bar {
+    mask-image: url(../../../assets/Icons/progress-bar.svg);
+    -webkit-mask-image: url(../../../assets/Icons/progress-bar.svg);
+    mask-size: cover;
+    width: 20rem;
+    height: 1rem;
+    background-color: black;
+    cursor: pointer;
+
+}
+
+.buttons-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.play-btn-container {
+    background-color: black;
+    padding: 0.5rem;
+    border-radius: 5rem;
+    cursor: pointer;
+
+
+}
+
+.masked-play {
+    mask-image: url(../../../assets/Icons/play-btn.svg);
+    -webkit-mask-image: url(../../../assets/Icons/play-btn.svg);
+    mask-size: cover;
+    width: 2rem;
+    height: 2rem;
+    background-color: white;
+
+}
+
+.masked-shuffle,
+.masked-prev,
+.masked-next,
+.masked-order {
+    mask-size: cover;
+    width: 2rem;
+    height: 2rem;
+    background-color: black;
+    cursor: pointer;
+
+}
+
+.masked-shuffle {
+    mask-image: url(../../../assets/Icons/shuffle-btn.svg);
+    -webkit-mask-image: url(../../../assets/Icons/shuffle-btn.svg);
+}
+
+.masked-prev {
+    mask-image: url(../../../assets/Icons/prev-btn.svg);
+    -webkit-mask-image: url(../../../assets/Icons/prev-btn.svg);
+}
+
+.masked-next {
+    mask-image: url(../../../assets/Icons/next-btn.svg);
+    -webkit-mask-image: url(../../../assets/Icons/next-btn.svg);
+}
+
+.masked-order {
+    mask-image: url(../../../assets/Icons/order-btn.svg);
+    -webkit-mask-image: url(../../../assets/Icons/order-btn.svg);
+}
+
+
+.about-artist-container {
+    display: flex;
+    flex-direction: column;
+   
+}
+
+.about-artist-title {
+    font-weight: 500;
+    font-size: 1.5rem;
+    align-self: flex-start
+}
+
+.artist-info {
+    display: flex;
+    flex-direction: column;
+   ;
+}
+
+.artist-sub-name {
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.followers,
+.spotify {
+    font-size: 1.2rem;
+    font-weight: 600;
+    opacity: 0.5;
+}
+
+img {
+    /* width: 20rem; */
+    height: 20rem;
+    border-radius: 0.5rem;
+}
+
+.title-close-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.masked-close{
+    mask-image:  url(../../../assets/Icons/close.svg);
+    -webkit-mask-image: url(../../../assets/Icons/close.svg);
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    background-color: black;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+}
+.masked-close:hover{
+  
+background-color: red;
+    
+}

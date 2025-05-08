@@ -1,0 +1,102 @@
+{
+  "homeComponent": {
+    "home": "Home",
+    "topSongs": "Todays Top Songs",
+    "movieRecommendations": "Movie Recommendations"
+  },
+  "songsComponent": {
+    "songs": "Songs",
+    "openCam": "Open camera to detect your emotions",
+    "letsEsc": "Let's Escape"
+  },
+  "moviesComponent": {
+    "movies": "Movies",
+    "openCam": "Open camera to detect your emotions",
+    "letsEsc": "Let's Escape"
+  },
+  "moviesDetailsComponent": {
+    "description": "Description",
+    "watchTrailer": "Watch Trailer",
+    "addToLibrary": "Add to library",
+    "popularity": "Popularity"
+  },
+  "libraryComponent": {
+    "library": "Library",
+    "favoriteSongs": "Favorite Songs",
+    "favoriteMovies": "Favorite Movies"
+  },
+  "profileComponent": {
+    "profile": "Profile",
+    "welcome": "Welcome , ",
+    "email": "Email",
+    "username": "Username",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "editProfile": "Edit Profile",
+    "profileTab": "Update Profile",
+    "fullName": "Full name",
+    "resetPasswordTab": "Update password",
+    "profileTab": "Update profile"
+  },
+  "onBoardingComponent": {
+    "onBoarding": "On Boarding",
+    "discover": "DISCOVER",
+    "Entertainment": "ENTERTAINMENT",
+    "tailordToYou": "TAILORD TO YOU",
+    "onBoardDiscoverSongs": "Discover your perfect playlist and stream it instantly with Spotify.",
+    "onBoardDiscoverMovies": "Your face tells the story let us suggest the perfect movie for you."
+  },
+  "loginComponent": {
+    "login": "Login",
+    "welcome": "Welcome Back",
+    "enterInfo": "Enter your email and password to access your account",
+    "username": "Username",
+    "email": "Email",
+    "enterEmail": "Enter your email",
+    "password": "Password",
+    "enterPassword": "Enter your password",
+    "forgotPassword": "Forgot password ?",
+    "dontHaveAccount": "Don't have an account ?",
+    "otp": "OTP",
+    "enterOTP": "Enter OTP",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password"
+  },
+  "signUpComponent": {
+    "signUp": "Sign Up",
+    "username": "Username",
+    "enterUsername": "Enter your username",
+    "email": "Email",
+    "enterEmail": "Enter your email",
+    "fullname": "Full name",
+    "enterFullname": "Enter full name",
+    "password": "Password",
+    "enterPassword": "Enter your password",
+    "confirmPassword": "Confirm password",
+    "enterConfirmPassword": "Confirm your password",
+    "alreadyHaveAccount": "Already have an account ?",
+    "discover": "Discover songs and movies like never before",
+    "enterCode": "Enter Code",
+    "enter6Digits": "Enter 6-digits verification code sent to your email",
+    "resendCode": "Resend Code ?",
+    "sendCode": "Send code"
+  },
+  "showAllComponent": {
+    "showAll": "Show All",
+    "allSongs": "All Songs",
+    "allMovies": "All Movies"
+  },
+  "topBarComponent": {
+    "getStarted": "Get Started",
+    "detectEmotionAgain": "Detect Emotion Again ?",
+    "emotionsReshape": "Where Emotions Reshape !"
+  },
+  "general": {
+    "save": "Save",
+    "showAll": "Show All",
+    "emotion": "Emotion",
+    "verify": "Verify",
+    "noMoreData": "No more data"
+  }
+}

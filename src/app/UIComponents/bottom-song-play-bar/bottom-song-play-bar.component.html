@@ -1,0 +1,40 @@
+<div class="bottom-song-play-bar-container" *ngIf="isLoggedIn">
+
+    <div class="image-song-artist-container">
+
+        <img class="song-image" [src]="selectedSong?.images?.[0]?.url || '/assets/Icons/no-image.svg'" alt="">
+
+        <div class="song-artist-names">
+            <div class="song-name">{{selectedSong?.name}}</div>
+            <div class="artist-name">{{selectedSong?.artists}}</div>
+        </div>
+
+
+    </div>
+
+
+    <div class="playbar-container">
+
+        <div class="buttons-container">
+            <div class="masked-shuffle"></div>
+            <div class="masked-prev"></div>
+
+            <div class="play-btn-container">
+                <div class="masked-play"></div>
+            </div>
+
+            <div class="masked-next"></div>
+            <div class="masked-order"></div>
+        </div>
+
+        <div class="masked-progress-bar"></div>
+
+    </div>
+
+    <div class="masked-favorite" (click)="handleAddRemoveToFromLibrary()"
+        [class.added-to-faves]="selectedSong.isSelected"></div>
+
+    <div class="masked-close" (click)="closeCard()"></div>
+
+
+</div>
