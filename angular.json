@@ -24,7 +24,11 @@
                 "glob": "**/*",
                 "input": "public"
               },
-              "src/_redirects",
+              {
+                "glob": "_redirects",
+                "input": "public",
+                "output": "/"
+              },
               "src/assets"
             ],
             "styles": ["src/styles.css"],
@@ -79,6 +83,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "_redirects",
+                "input": "public",
+                "output": "/"
               },
               "src/_redirects",
               "src/assets"
