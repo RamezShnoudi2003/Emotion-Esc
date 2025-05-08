@@ -149,7 +149,7 @@ export class TopBarComponent implements OnInit {
   logout() {
     this.sweetAlertService
       .confrim('Are you sure you want to log out ?')
-      .then((response) => {
+      .then((response: any) => {
         if (response.isConfirmed) {
           this.accountService.logout();
         }
