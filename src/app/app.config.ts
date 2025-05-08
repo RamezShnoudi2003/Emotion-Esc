@@ -8,6 +8,7 @@ import {
   provideRouter,
   RouterModule,
   withEnabledBlockingInitialNavigation,
+  withHashLocation,
 } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -29,7 +30,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withEnabledBlockingInitialNavigation()),
+    provideRouter(routes, withHashLocation()),
     importProvidersFrom(
       TranslateModule.forRoot({
         loader: {
