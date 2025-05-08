@@ -82,7 +82,7 @@ export class BottomBarComponent implements OnInit {
   isUserLoggedInFunction() {
     // isUserLogged In?
     this.accountService.isUserLoggedIn().subscribe({
-      next: (response) => {
+      next: (response: any) => {
         this.isUserLoggedIn = response;
       },
     });
