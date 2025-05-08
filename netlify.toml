@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = true  # Bypass Netlify's default 404 handling
