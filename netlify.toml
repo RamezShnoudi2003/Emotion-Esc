@@ -1,14 +1,16 @@
 [build]
   command = "ng build"
-  publish = "dist/emotion-esc"
+  publish = "dist/emotion-esc" 
 
+# Required for Angular routes
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = true  
+  force = true
 
+# Optional: For debugging redirects
 [[redirects]]
-  from = "/assets/*"
-  to = "/assets/:splat"
+  from = "/_redirects"
+  to = "/_redirects"
   status = 200
