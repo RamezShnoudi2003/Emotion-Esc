@@ -5,11 +5,21 @@
 
         <form [formGroup]="profileFormGroup">
 
-            <div class="welcome-container">
-                <span class="title">
-                    {{'profileComponent.welcome'|translate}}
-                </span>
-                <span class="username">{{firstName}}</span>
+            <div class="welcome-spotify-container">
+
+                <div class="welcome-container">
+                    <span class="title">
+                        {{'profileComponent.welcome'|translate}}
+                    </span>
+                    <span class="username">{{firstName}}</span>
+                </div>
+
+                <div class="spotify-container" (click)="loginToSpotify()" [class.disabled]="linkedToSpotify">
+                    <div class="masked-spotify"></div>
+                    <div>{{'profileComponent.linkSpotify'|translate}}</div>
+                </div>
+
+                <!-- <app-button type="button" text="spotify " olor="primary"></app-button> -->
             </div>
 
             <div class="profile-tabs-container">
@@ -22,7 +32,7 @@
                 </div>
             </div>
 
-            <app-input label="Full name" type="text" formControlName="fullName"></app-input>
+            <app-input label="profileComponent.fullName" type="text" formControlName="fullName"></app-input>
 
             <app-input label="{{'profileComponent.email'|translate}}" type="text" formControlName="email"></app-input>
 
@@ -37,11 +47,20 @@
 
         <form [formGroup]="passwordFormGroup">
 
-            <div class="welcome-container">
-                <span class="title">
-                    {{'profileComponent.welcome'|translate}}
-                </span>
-                <span class="username">{{firstName}}</span>
+            <div class="welcome-spotify-container">
+
+                <div class="welcome-container">
+                    <span class="title">
+                        {{'profileComponent.welcome'|translate}}
+                    </span>
+                    <span class="username">{{firstName}}</span>
+                </div>
+
+                <div class="spotify-container" (click)="loginToSpotify()" [class.disabled]="linkedToSpotify">
+                    <div class="masked-spotify"></div>
+                    <div>{{'profileComponent.linkSpotify'|translate}}</div>
+                </div>
+
             </div>
 
             <div class="profile-tabs-container">
@@ -56,14 +75,13 @@
 
 
             <app-input label="{{'profileComponent.currentPassword'|translate}}" type="password"
-                placeholder="Enter current password" formControlName="currentPassword"></app-input>
+                placeholder="profileComponent.currentPassword" formControlName="currentPassword"></app-input>
 
             <app-input formControlName="newPassword" label="{{'profileComponent.newPassword'|translate}}"
-                type="password" placeholder="Enter new password"></app-input>
+                type="password" placeholder="profileComponent.newPassword"></app-input>
 
             <app-input label="{{'profileComponent.confirmPassword'|translate}}" type="password"
-                placeholder="Confirm new password" formControlName="confirmPassword"></app-input>
-
+                placeholder="profileComponent.confirmPassword" formControlName="confirmPassword"></app-input>
 
             <app-button [isBusy]="isPasswordBtnLoading" [disabled]="isPasswordBtnLoading || isPasswordBtnDisabled"
                 type="submit" text="general.save" (buttonClick)="updatePassword()" color="primary"></app-button>

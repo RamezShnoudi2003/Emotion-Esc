@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 import { PersistDataService } from '../../Services/persist-data.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { LibraryService } from '../../Services/API/library.service';
-import { InputComponent } from '../../UIComponents/input/input.component';
 import { SongPlayService } from '../../Services/song-play.service';
+import { SpotifyService } from '../../Services/spotify.service';
 
 @Component({
   selector: 'app-library',
@@ -22,7 +22,6 @@ import { SongPlayService } from '../../Services/song-play.service';
     NgIf,
     ButtonComponent,
     TranslateModule,
-    InputComponent,
   ],
   templateUrl: './library.component.html',
   styleUrl: './library.component.css',
@@ -48,23 +47,29 @@ export class LibraryComponent {
 
   constructor(
     private readonly moviesService: MoviesService,
-    private readonly songsService: SongsService,
     private readonly router: Router,
-    private readonly persistDataService: PersistDataService,
     private readonly libraryService: LibraryService,
-    private readonly songPlayService: SongPlayService
+    private readonly songPlayService: SongPlayService,
+    private readonly spotifyService: SpotifyService
   ) {}
 
   ngOnInit(): void {
     this.getLibrary('movie');
     this.getLibrary('song');
-    // this.getMusicRecommendations();
-    // this.getMoviesRecommendations();
+
+    this.libraryService.addedRemovedSongFromLibraryTrigger$.subscribe({
+      next: () => {
+        this.getLibrary('song');
+      },
+    });
   }
 
   getLibrary(type: string) {
-    this.isSongsLoading = true;
-    this.isMoviesLoading = true;
+    if (type === 'song') {
+      this.isSongsLoading = true;
+    } else if (type === 'movie') {
+      this.isMoviesLoading = true;
+    }
 
     let model = {
       type: type,
@@ -82,6 +87,18 @@ export class LibraryComponent {
             return;
           }
           this.songItems = response.data.items;
+
+          this.songItems.forEach((item: any) => {
+            item.name = item.title;
+            item.artists = [item.artistOrDirector];
+            item.images = [{ url: item.itemImage }];
+            item.uri = item.itemId;
+            // when selecting an item from library then by default its selected as favorites
+            item.isSelected = true;
+          });
+
+          this.spotifyService.trackList = this.songItems;
+
           console.log('songs ', this.songItems);
           this.isSongsLoading = false;
         } else if (type === 'movie') {
@@ -104,15 +121,11 @@ export class LibraryComponent {
 
   takeToDescription(item: any) {
     // the api to get movie details expects id as id not itemId
-    item.id = item.itemId;
-    this.moviesService.takeToDescription(item);
+    let movieId = parseInt(item.itemId);
+    this.moviesService.takeToDescription(movieId);
   }
 
   playSong(song: any) {
-    if (!document.body.classList.contains('song-play-shown')) {
-      document.body.classList.add('song-play-shown');
-    }
-
     // format sent from our library differs from what spng-play-card expects
     //this is the format that we wanna send to song play card
     let model = {

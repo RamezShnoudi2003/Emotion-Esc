@@ -6,9 +6,9 @@ import { BehaviorSubject, firstValueFrom } from 'rxjs';
 })
 export class TabService {
   // Default tab title
-
   private readonly selectedTab: BehaviorSubject<string> =
     new BehaviorSubject<string>('home');
+
   selectedTab$ = this.selectedTab.asObservable();
 
   setSelectedTab(tab: string) {
@@ -19,10 +19,4 @@ export class TabService {
       console.log('sat selected tab ', this.selectedTab.getValue());
     }
   }
-
-  // getSelectedTab() {
-  //   let lastSelectedTab = localStorage.getItem('tab') || 'home';
-  //   this.selectedTab.next(lastSelectedTab);
-  //   return this.selectedTab$;
-  // }
 }

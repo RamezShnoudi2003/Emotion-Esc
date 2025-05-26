@@ -1,9 +1,6 @@
 <div class="title-show-container" *ngIf="emotion.length!==0">
     <div class="title">{{'general.emotion'|translate}}: {{emotion}}</div>
 
-    <!-- <app-button text="general.showAll" [color]="'primary'" (buttonClick)="showAll('movies')"
-        [disabled]="isMoviesLoading"></app-button> -->
-
     <div class="next-prev-container">
         <div class="masked-prev" (click)="prev()"></div>
         <div class="masked-next" (click)="next()"></div>
@@ -15,7 +12,7 @@
 <div class="right-left-container" *ngIf="emotion.length===0">
     <div class="left-container">
         <img class="detect-face-image" src="/assets/images/detect-face.png"
-            alt="Onboarding image showing playlists and movies">
+            alt="Onboarding showing playlists and movies">
 
     </div>
 

@@ -6,17 +6,19 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: stretch;
-    padding: 1rem;
-    border: 2px solid black;
+    padding: 0.6rem;
+    border: 2px solid var(--color-primary);
     border-radius: 1rem;
 }
 
-
-.title-close-container{
+.title-close-container {
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
 }
+
 
 .title {
     font-weight: 500;
@@ -27,10 +29,11 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }
 
-.song-artist-names{
-width: 20rem;
+.song-artist-names {
+    width: 20rem;
 }
 
 
@@ -46,26 +49,28 @@ width: 20rem;
 }
 
 .masked-favorite {
-    mask-image: url(../../../assets/Icons/close.svg);
-    -webkit-mask-image: url(../../../assets/Icons/close.svg);
+    mask-image: url(/assets/Icons/favorite.svg);
+    -webkit-mask-image: url(/assets/Icons/favorite.svg);
+}
+
+.masked-favorite.added-to-faves {
+    mask-image: url(/assets/Icons/favorite-filled.svg);
+    -webkit-mask-image: url(/assets/Icons/favorite-filled.svg);
+}
+
+.masked-favorite,
+.masked-favorite.added-to-faves {
     mask-size: cover;
     -webkit-mask-size: cover;
-    background-color: black;
+    background-color: var(--color-primary);
     width: 2rem;
     height: 2rem;
     cursor: pointer;
 }
 
-.masked-favorite {
-    mask-image: url(../../../assets/Icons/favorite.svg);
-    -webkit-mask-image: url(../../../assets/Icons/favorite.svg);
-}
-
-
-.masked-favorite.added-to-faves {
-    mask-image: url(../../../assets/Icons/favorite-filled.svg);
-    -webkit-mask-image: url(../../../assets/Icons/favorite-filled.svg);
-
+.masked-favorite:hover,
+.masked-favorite.added-to-faves:hover {
+    background-color: var(--color-danger)
 }
 
 .playbar-container {
@@ -73,18 +78,16 @@ width: 20rem;
     flex-direction: column;
     align-items: center;
     row-gap: 0.5rem;
-   
 }
 
 .masked-progress-bar {
-    mask-image: url(../../../assets/Icons/progress-bar.svg);
-    -webkit-mask-image: url(../../../assets/Icons/progress-bar.svg);
+    mask-image: url(/assets/Icons/progress-bar.svg);
+    -webkit-mask-image: url(/assets/Icons/progress-bar.svg);
     mask-size: cover;
     width: 20rem;
     height: 1rem;
-    background-color: black;
+    background-color: var(--color-primary);
     cursor: pointer;
-
 }
 
 .buttons-container {
@@ -96,61 +99,52 @@ width: 20rem;
 }
 
 .play-btn-container {
-    background-color: black;
+    background-color: var(--color-primary);
     padding: 0.5rem;
     border-radius: 5rem;
     cursor: pointer;
-
-
 }
 
 .masked-play {
-    mask-image: url(../../../assets/Icons/play-btn.svg);
-    -webkit-mask-image: url(../../../assets/Icons/play-btn.svg);
+    mask-image: url(/assets/Icons/play-btn.svg);
+    -webkit-mask-image: url(/assets/Icons/play-btn.svg);
+}
+
+.masked-pause {
+    mask-image: url(/assets/Icons/pause-song.svg);
+    -webkit-mask-image: url(/assets/Icons/pause-song.svg);
+}
+
+.masked-pause,
+.masked-play {
     mask-size: cover;
     width: 2rem;
     height: 2rem;
-    background-color: white;
-
+    background-color: var(--color-text);
 }
 
-.masked-shuffle,
 .masked-prev,
-.masked-next,
-.masked-order {
+.masked-next {
     mask-size: cover;
     width: 2rem;
     height: 2rem;
-    background-color: black;
+    background-color: var(--color-primary);
     cursor: pointer;
-
-}
-
-.masked-shuffle {
-    mask-image: url(../../../assets/Icons/shuffle-btn.svg);
-    -webkit-mask-image: url(../../../assets/Icons/shuffle-btn.svg);
 }
 
 .masked-prev {
-    mask-image: url(../../../assets/Icons/prev-btn.svg);
-    -webkit-mask-image: url(../../../assets/Icons/prev-btn.svg);
+    mask-image: url(/assets/Icons/prev-btn.svg);
+    -webkit-mask-image: url(/assets/Icons/prev-btn.svg);
 }
 
 .masked-next {
-    mask-image: url(../../../assets/Icons/next-btn.svg);
-    -webkit-mask-image: url(../../../assets/Icons/next-btn.svg);
+    mask-image: url(/assets/Icons/next-btn.svg);
+    -webkit-mask-image: url(/assets/Icons/next-btn.svg);
 }
-
-.masked-order {
-    mask-image: url(../../../assets/Icons/order-btn.svg);
-    -webkit-mask-image: url(../../../assets/Icons/order-btn.svg);
-}
-
 
 .about-artist-container {
     display: flex;
     flex-direction: column;
-   
 }
 
 .about-artist-title {
@@ -162,7 +156,6 @@ width: 20rem;
 .artist-info {
     display: flex;
     flex-direction: column;
-   ;
 }
 
 .artist-sub-name {
@@ -170,39 +163,91 @@ width: 20rem;
     font-weight: 500;
 }
 
-.followers,
-.spotify {
-    font-size: 1.2rem;
-    font-weight: 600;
-    opacity: 0.5;
-}
 
 img {
-    /* width: 20rem; */
     height: 20rem;
     border-radius: 0.5rem;
 }
 
-.title-close-container{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.masked-close{
-    mask-image:  url(../../../assets/Icons/close.svg);
-    -webkit-mask-image: url(../../../assets/Icons/close.svg);
+.masked-close {
+    mask-image: url(/assets/Icons/close.svg);
+    -webkit-mask-image: url(/assets/Icons/close.svg);
     mask-size: contain;
     -webkit-mask-size: contain;
-    background-color: black;
+    background-color: var(--color-primary);
     width: 2.5rem;
     height: 2.5rem;
     cursor: pointer;
 }
-.masked-close:hover{
-  
-background-color: red;
-    
+
+.masked-close:hover {
+
+    background-color: var(--color-danger);
+
+}
+
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+}
+
+.progress-bar {
+    width: 100%;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+.time-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+}
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.volume-bar {
+    width: 80%;
+    height: 0.2rem;
+    border: 1px solid var(--color-primary);
+    border-radius: 1rem;
+    appearance: none;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+.masked-high,
+.masked-medium,
+.masked-low,
+.masked-mute {
+    mask-size: contain;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: var(--color-primary);
+}
+
+.masked-high {
+    mask-image: url(/assets/Icons/volume-high.svg);
+    --webkit-mask-image: url(/assets/Icons/volume-high.svg);
+}
+
+.masked-medium {
+    mask-image: url(/assets/Icons/volume-medium.svg);
+    --webkit-mask-image: url(/assets/Icons/volume-medium.svg);
+}
+
+.masked-low {
+    mask-image: url(/assets/Icons/volume-low.svg);
+    --webkit-mask-image: url(/assets/Icons/volume-low.svg);
+}
+
+.masked-mute {
+    mask-image: url(/assets/Icons/volume-mute.svg);
+    --webkit-mask-image: url(/assets/Icons/volume-mute.svg);
 }

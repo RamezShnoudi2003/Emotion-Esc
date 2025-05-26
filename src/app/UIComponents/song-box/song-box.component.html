@@ -1,9 +1,11 @@
-<div class="container" (click)="songSelected($event)">
+<div class="parent-container" (click)="songSelected($event)">
+    <div class="container">
 
-    <img [src]="imageSrc">
+        <img [src]="imageSrc">
 
-    <div class="text-container">
-        <div class="song-title">{{title}}</div>
-        <div class="artist">{{artist}}</div>
+        <div class="text-container">
+            <div class="song-title">{{title}}</div>
+            <div class="artist">{{artist}}</div>
+        </div>
     </div>
 </div>

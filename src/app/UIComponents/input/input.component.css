@@ -8,7 +8,7 @@
 
 input {
     width: auto;
-    background-color: white;
+    background-color: var(--color-text);
     border: none;
     border-radius: 3rem;
     padding: 1rem;
@@ -30,16 +30,24 @@ input:disabled {
     font-weight: 600;
 }
 
-.validation-container{
+.validation-container {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-padding: 0.5rem;    
+    padding: 0.5rem;
 }
 
-.validation-text{
-    color:var(--color-danger);
+.validation-text {
+    color: var(--color-danger);
     opacity: 0.7;
     font-size: 0.9rem;
 
+}
+
+input[type="search"] {
+    padding: 0.5rem;
+}
+
+.input-container.search {
+    padding: 0;
 }

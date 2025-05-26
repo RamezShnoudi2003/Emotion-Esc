@@ -46,8 +46,9 @@
 
         <app-input formControlName="otp" type="tel" placeholder="signUpComponent.enterCode"></app-input>
 
-        <app-button [disabled]="isVerificationBtnDisabled || isVerificationBtnLoading" text="general.verify"
-            type="submit" color="primary" (buttonClick)="enterOTP()"></app-button>
+        <app-button [isBusy]="isVerificationBtnLoading"
+            [disabled]="isVerificationBtnDisabled || isVerificationBtnLoading" text="general.verify" type="submit"
+            color="primary" (buttonClick)="enterOTP()"></app-button>
 
         <div class="link-container">
 

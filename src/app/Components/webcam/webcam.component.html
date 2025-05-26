@@ -1,6 +1,5 @@
 <div class="vid-btn-container">
 
-
     <div class="video-container" [ngClass]="{'hidden': isImageCaptured}">
         <div class="spinner-container" *ngIf="isLoading">
             <div class="spinner"></div>
@@ -12,24 +11,23 @@
     </div>
 
     <!-- Take Picture Button -->
-    <app-button class="takePic" color="primary" text="Take Picture" (click)="takePicture()"
-        *ngIf="!isLoading && !isImageCaptured">
-    </app-button>
+    <div class="masked-camera" (click)="takePicture()" *ngIf="!isLoading && !isImageCaptured"></div>
 
     <!-- Captured Image Section -->
     <div class="pic-captured-text-container" *ngIf="isImageCaptured && emotionText">
-        <div class="emotion-captured-text">You Look {{emotionText}}</div>
-        <img *ngIf="imageUrl" [src]="imageUrl" alt="Captured Image" />
+        <div class="emotion-captured-text">{{'webcamComponent.youLook'|translate}} {{emotionText}}</div>
+        <img *ngIf="imageUrl" [src]="imageUrl" alt="Captured Pic" />
         <div class="captured-pic-buttons">
-            <app-button (buttonClick)="startVideo()" text="Retry Picture" color="primary"></app-button>
-            <app-button (buttonClick)="goBack()" text="Continue" color="primary"></app-button>
+            <app-button (buttonClick)="startVideo()" text="webcamComponent.recapture" color="primary"></app-button>
+            <app-button (buttonClick)="goBack()" text="webcamComponent.continue" color="primary"></app-button>
         </div>
     </div>
 
     <div class="pic-captured-text-container" *ngIf="isImageCaptured && !emotionText">
-        <div class="emotion-captured-text">We didn't capture your emotion <br>please try again</div>
+        <div class="emotion-captured-text"
+            [innerHTML]="'webcamComponent.emotionNotCaptured' | translate:{ lineBreak: '<br>' }"></div>
         <div class="captured-pic-buttons">
-            <app-button (buttonClick)="startVideo()" text="Retry Picture" color="primary"></app-button>
+            <app-button (buttonClick)="startVideo()" text="webcamComponent.recapture" color="primary"></app-button>
         </div>
     </div>
 </div>

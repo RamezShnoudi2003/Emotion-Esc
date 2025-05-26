@@ -65,3 +65,41 @@ app-button {
 .username {
     font-weight: 600;
 }
+
+.welcome-spotify-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.masked-spotify {
+    mask-image: url(/assets/Icons/spotify-icon.svg);
+    --webkit-mask-image: url(/assets/Icons/spotify-icon.svg);
+    mask-size: cover;
+    background-color: var(--color-primary);
+    width: 2rem;
+    height: 2rem;
+}
+
+.spotify-container {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    color: var(--color-warning);
+    cursor: pointer;
+    gap: 0.3rem;
+}
+
+.spotify-container:hover {
+    color: var(--color-danger);
+}
+
+.disabled {
+    color: var(--color-secondary);
+    cursor: default;
+}
+
+.disabled:hover {
+    color: var(--color-secondary);
+}

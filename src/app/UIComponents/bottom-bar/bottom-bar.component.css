@@ -1,7 +1,6 @@
-
-.bottom-tabs-container{
+.bottom-tabs-container {
     background-image: url(/assets/images/grey-background.webp);
-    color: var(--color-primary);    
+    color: var(--color-primary);
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -10,7 +9,7 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
-.icon-title-container{
+.icon-title-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,16 +17,15 @@
     padding: 0.5rem;
 }
 
-.icon-title-container.selected{
+.icon-title-container.selected {
     cursor: pointer;
 }
 
-
-.masked-icon{
+.masked-icon {
     background-color: var(--color-primary);
     mask-size: contain;
-    width:2rem;
-    height:2rem;
+    width: 2rem;
+    height: 2rem;
 }
 
 .get-started-small-screen {

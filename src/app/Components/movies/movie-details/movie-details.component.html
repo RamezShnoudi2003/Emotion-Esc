@@ -1,5 +1,8 @@
-<div class="title-show-container" (click)="back()">
-    <div class="masked-back-button"></div>
+<div class="title-show-container">
+    <div class="back-title-container">
+        <div class="masked-back-button" (click)="back()"></div>
+        <div class="title">{{'moviesDetailsComponent.movieDetails'|translate}}</div>
+    </div>
 </div>
 
 
@@ -10,16 +13,17 @@
 <div class="movie-info-container" *ngIf="!isDetailsLoading">
 
 
-    <img *ngIf="movieDetails.backdrop_path!==null" [src]="'https://image.tmdb.org/t/p/w500'+ movieDetails.backdrop_path"
+    <img [class.no-image]="movieDetails.backdrop_path==''"
+        [src]="movieDetails.backdrop_path!==''?'https://image.tmdb.org/t/p/w500'+ movieDetails.backdrop_path:'/assets/Icons/no-image.svg'"
         alt="movie">
 
-    <div class="masked-no-image" *ngIf="movieDetails.backdrop_path===null"></div>
 
     <div class="info-container">
 
         <div class="movie-title">{{movieDetails.original_title}}</div>
 
         <div class="sub-info-container">
+
             <div class="movie-duration">
                 {{movieDetails.release_date}} | {{formattedDuration}}
                 <span *ngIf="language=='ar'">س</span>
@@ -43,7 +47,7 @@
 
                 {{'moviesDetailsComponent.description'|translate}}
             </b>
-            {{state.overview || movieDetails.overview}}
+            {{recievedMovie.overview || movieDetails.overview}}
         </div>
 
         <div class="buttons-container">
@@ -53,9 +57,7 @@
             <div class="masked-favorite" (click)="handleAddRemoveToFromLibrary()"
                 [class.added-to-faves]="movieDetails.isSelected">
             </div>
-            <!-- 
-            <app-button text="moviesDetailsComponent.addToLibrary" color="outline"
-                (buttonClick)="addItemToLibrary(movieDetails)"></app-button> -->
+
         </div>
 
     </div>
@@ -65,8 +67,8 @@
 
 
 <div class="title-show-container">
-    <div class="title">Quick Mood Shift</div>
-    <app-button text="show all" [color]="'primary'" (buttonClick)="showAll('movies')"
+    <div class="title">{{'moviesDetailsComponent.quickMoodShift'|translate}}</div>
+    <app-button text="general.showAll" [color]="'primary'" (buttonClick)="showAll('movies')"
         [disabled]="isRecommendationsLoading"></app-button>
 </div>
 

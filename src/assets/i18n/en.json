@@ -2,7 +2,8 @@
   "homeComponent": {
     "home": "Home",
     "topSongs": "Todays Top Songs",
-    "movieRecommendations": "Movie Recommendations"
+    "movieRecommendations": "Movie Recommendations",
+    "popularMovies": "Popular Movies"
   },
   "songsComponent": {
     "songs": "Songs",
@@ -15,10 +16,12 @@
     "letsEsc": "Let's Escape"
   },
   "moviesDetailsComponent": {
-    "description": "Description",
+    "description": "Description :",
     "watchTrailer": "Watch Trailer",
     "addToLibrary": "Add to library",
-    "popularity": "Popularity"
+    "popularity": "Popularity :",
+    "quickMoodShift": "Quick Mood Shift",
+    "movieDetails": "Movie Details"
   },
   "libraryComponent": {
     "library": "Library",
@@ -37,7 +40,7 @@
     "profileTab": "Update Profile",
     "fullName": "Full name",
     "resetPasswordTab": "Update password",
-    "profileTab": "Update profile"
+    "linkSpotify": "Link to Spotify"
   },
   "onBoardingComponent": {
     "onBoarding": "On Boarding",
@@ -61,7 +64,8 @@
     "otp": "OTP",
     "enterOTP": "Enter OTP",
     "newPassword": "New password",
-    "confirmPassword": "Confirm password"
+    "confirmPassword": "Confirm password",
+    "resetForgottenPassword": "Reset forgotten password"
   },
   "signUpComponent": {
     "signUp": "Sign Up",
@@ -92,11 +96,22 @@
     "detectEmotionAgain": "Detect Emotion Again ?",
     "emotionsReshape": "Where Emotions Reshape !"
   },
+  "webcamComponent": {
+    "recapture": "Recapture",
+    "youLook": "You look",
+    "emotionNotCaptured": "We didn't capture your emotion,{{lineBreak}}Please try again.",
+    "continue": "Continue"
+  },
+  "songPlayCardComponent": {
+    "playingNow": "Playing Now"
+  },
   "general": {
     "save": "Save",
     "showAll": "Show All",
     "emotion": "Emotion",
     "verify": "Verify",
-    "noMoreData": "No more data"
+    "noMoreData": "No more data",
+    "enter": "Enter",
+    "search": "Search"
   }
 }

@@ -1,72 +1,45 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-declare var Spotify: any; // Declare Spotify object globally
+declare let Spotify: any;
 
 @Injectable({
   providedIn: 'root',
 })
 export class SpotifyService {
-  private player: any;
-  private isPlayerReady: boolean = false;
+  public player: any;
+  public isPlayerReady: boolean = false;
+  private accessToken: string = '';
   private deviceId: string = '';
+  progressInterval: any;
 
-  private readonly clientId = '9e299651fa6543618205a7bbeb29e944'; // Replace with your client ID
-  private readonly clientSecret = '6c1a9aac7c244315969b9467ec81d526'; // Replace with your client secret
-  private accessToken: string =
-    localStorage.getItem('spotify_access_token') || '';
+  public trackList: any[] = [];
+  currentTrackIndex: number = 0;
 
-  // Get the OAuth token using client credentials flow
-  async getToken(): Promise<void> {
-    try {
-      // 1️⃣ Get Access Token
-      const tokenResponse = await fetch(
-        'https://accounts.spotify.com/api/token',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            grant_type: 'client_credentials',
-            client_id: this.clientId,
-            client_secret: this.clientSecret,
-          }),
-        }
-      );
+  public trackProgress$: BehaviorSubject<number> = new BehaviorSubject(0);
+  public trackDuration$: BehaviorSubject<number> = new BehaviorSubject(0);
 
-      if (!tokenResponse.ok) {
-        console.error(
-          'Failed to get access token',
-          tokenResponse.status,
-          tokenResponse.statusText
-        );
-        throw new Error('Failed to retrieve access token');
-      }
+  private readonly isLinkedToSpotifySubject: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
 
-      const tokenData = await tokenResponse.json();
+  isLinkedToSpotify$: Observable<boolean> =
+    this.isLinkedToSpotifySubject.asObservable();
 
-      if (tokenData.access_token) {
-        this.accessToken = tokenData.access_token;
-        console.log('Access token received');
-      } else {
-        console.error('No access token found');
-        throw new Error('No access token found');
-      }
-    } catch (error) {
-      console.error('Error fetching token:', error);
+  handleSpotifyPlay(selectedSong: any, accessToken: string) {
+    if (this.player && this.isPlayerReady) {
+      console.log('Spotify Player already initialized.');
+      this.playSong(selectedSong.uri);
+    } else {
+      this.initializeSpotifyPlayer(selectedSong, accessToken);
     }
   }
 
   // Initialize the Spotify Player with OAuth token
-  async initializeSpotifyPlayer(songAndToken: any): Promise<void> {
-    console.log('this.initializeSpotifyPlayer called ');
-    this.accessToken = songAndToken.accessToken;
-    console.log('jbours access token ', this.accessToken);
+  initializeSpotifyPlayer(selectedSong: any, accessToken: string) {
     try {
-      if (!this.accessToken) {
-        await this.getToken();
-      }
-      // console.log('access token  ', this.accessToken);
+      this.accessToken = accessToken;
+
+      console.log('this.initializeSpotifyPlayer called ');
 
       if (this.accessToken) {
         // Create the player instance
@@ -101,7 +74,8 @@ export class SpotifyService {
           console.log('Spotify Player is ready with device ID', data.device_id);
           this.deviceId = data.device_id;
           this.isPlayerReady = true;
-          this.playSong(songAndToken.song.id);
+
+          this.playSong(selectedSong.uri);
         });
 
         // When the player state changes (e.g., when a track changes)
@@ -113,7 +87,7 @@ export class SpotifyService {
 
           console.log(
             'Currently playing track:',
-            state.track_window.current_track.name
+            state.track_window.current_track?.name
           );
         });
         // Initialize the player
@@ -130,26 +104,89 @@ export class SpotifyService {
     }
   }
 
-  // Play a song using a track ID
-  playSong(trackId: string): void {
-    if (this.isPlayerReady) {
-      const trackUri = `spotify:track:${trackId}`;
-      this.player
-        .resume({
-          uris: [trackUri],
-        })
-        .then(() => {
-          console.log('Now playing track: ', trackId);
+  // Play a song using a track URI
+  playSong(trackUri: string): void {
+    clearInterval(this.progressInterval);
+    if (this.isPlayerReady && this.accessToken && this.deviceId) {
+      fetch(
+        'https://api.spotify.com/v1/me/player/play?device_id=' + this.deviceId,
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            uris: [trackUri],
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.accessToken}`,
+          },
+        }
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Failed to start playback');
+          }
+
+          this.trackList.forEach((item: any, index: number) => {
+            if (item.uri === trackUri) {
+              this.currentTrackIndex = index;
+            }
+          });
+
+          console.log('Now playing track: ', trackUri);
+          this.startProgressTracking();
         })
         .catch((e: any) => {
           console.error('Error playing track:', e);
         });
     } else {
-      console.error('Player is not ready yet.');
+      console.error('Player is not ready or access token/device ID missing.');
     }
   }
 
-  // Optionally: Stop playing music
+  startProgressTracking(): void {
+    clearInterval(this.progressInterval);
+    this.progressInterval = setInterval(() => {
+      if (this.player && this.isPlayerReady) {
+        this.player.getCurrentState().then((state: any) => {
+          if (state) {
+            this.trackProgress$.next(state.position);
+            this.trackDuration$.next(state.duration);
+          }
+        });
+      }
+    }, 1000);
+  }
+
+  setVolume(volume: number): void {
+    if (this.player && this.isPlayerReady) {
+      this.player
+        .setVolume(volume)
+        .then(() => {
+          console.log(`Volume set to ${volume}`);
+        })
+        .catch((e: any) => {
+          console.error('Failed to set volume:', e);
+        });
+    } else {
+      console.error('Player is not ready.');
+    }
+  }
+
+  resumePlayback(): void {
+    if (this.player && this.isPlayerReady) {
+      this.player
+        .resume()
+        .then(() => {
+          console.log('Playback resumed');
+        })
+        .catch((error: any) => {
+          console.error('Error resuming playback:', error);
+        });
+    } else {
+      console.error('Player is not ready.');
+    }
+  }
+
   stopSong(): void {
     if (this.isPlayerReady) {
       this.player
@@ -165,9 +202,46 @@ export class SpotifyService {
     }
   }
 
-  // Get OAuth token from URL hash (for client-side authentication)
-  getAccessTokenFromUrl(): void {
-    const urlParams = new URLSearchParams(window.location.hash.substring(1));
-    this.accessToken = urlParams.get('access_token')!;
+  playTrackByIndex(index: number): any {
+    if (index >= 0 && index < this.trackList.length) {
+      const track = this.trackList[index];
+      this.currentTrackIndex = index;
+      this.playSong(track.uri); // your existing method
+      return track;
+    } else {
+      console.warn('Track index out of bounds');
+    }
+  }
+
+  nextTrack(): any {
+    const nextIndex = this.currentTrackIndex + 1;
+    if (nextIndex < this.trackList.length) {
+      let track = this.playTrackByIndex(nextIndex);
+      console.log('trackkk', track);
+      // track.isSelected = false;
+      return track;
+    } else {
+      console.log('End of playlist');
+      let track = this.playTrackByIndex(0);
+      return track;
+    }
+  }
+
+  prevTrack(): any {
+    const prevIndex = this.currentTrackIndex - 1;
+    if (prevIndex >= 0) {
+      let track = this.playTrackByIndex(prevIndex);
+      console.log('trackkk', track);
+      // track.isSelected = false;
+      return track;
+    } else {
+      console.log('Start of playlist');
+      let track = this.playTrackByIndex(this.trackList.length - 1);
+      return track;
+    }
+  }
+
+  setIsLinkedToSpotify(value: boolean) {
+    this.isLinkedToSpotifySubject.next(value);
   }
 }

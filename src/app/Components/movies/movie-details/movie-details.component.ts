@@ -1,26 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ButtonComponent } from '../../../UIComponents/button/button.component';
 import { MovieBoxComponent } from '../../../UIComponents/movie-box/movie-box.component';
-import { DecimalPipe, NgFor, NgIf } from '@angular/common';
-import { Router } from '@angular/router';
+import { NgFor, NgIf } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MoviesService } from '../../../Services/API/movies.service';
 import { PersistDataService } from '../../../Services/persist-data.service';
 import { LibraryService } from '../../../Services/API/library.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { min } from 'rxjs';
 import { LanguageService } from '../../../Services/language.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-movie-details',
   standalone: true,
-  imports: [
-    ButtonComponent,
-    MovieBoxComponent,
-    NgFor,
-    DecimalPipe,
-    NgIf,
-    TranslateModule,
-  ],
+  imports: [ButtonComponent, MovieBoxComponent, NgFor, NgIf, TranslateModule],
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css',
 })
@@ -39,14 +32,13 @@ export class MovieDetailsComponent implements OnInit {
 
   showTrailerBtn: boolean = false;
 
-  pageUserWasLastOnBeforeViewingDetails: number = 1;
-
   constructor(
     private readonly router: Router,
     private readonly moviesService: MoviesService,
-    private readonly persistDataService: PersistDataService,
     private readonly libraryService: LibraryService,
-    private readonly languageService: LanguageService
+    private readonly languageService: LanguageService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly location: Location
   ) {}
 
   ngOnInit(): void {
@@ -55,20 +47,15 @@ export class MovieDetailsComponent implements OnInit {
         this.language = response;
       },
     });
-    this.persistDataService.setItem('screen', 'movie-details');
-
-    this.pageUserWasLastOnBeforeViewingDetails =
-      this.persistDataService.getItem('page');
-
-    this.persistDataService.removeItem('page');
 
     console.log(window.history.state);
 
-    this.state = window.history.state;
-
     this.recievedMovie = window.history.state;
 
-    this.getMovieDetails(this.recievedMovie.id);
+    this.activatedRoute.paramMap.subscribe((params) => {
+      const movieId = params.get('id') || '';
+      this.getMovieDetails(movieId);
+    });
 
     this.getMovieRecommendations();
   }
@@ -143,20 +130,20 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   takeToDescription(item: any) {
-    this.persistDataService.setItem('selected-movie', item);
     // this enforces route to redirect with the new state because if we are on the same screen and tried to navigate to it with different data it wont change
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.moviesService.takeToDescription(item);
-    });
+    // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.moviesService.takeToDescription(item.id);
+    // });
   }
 
   watchTrailer(movie: any) {
     console.log(movie);
     console.log(movie.trailers[0]);
 
-    window.location.href =
-      // embed is for modal
-      'https://www.youtube.com/embed/' + movie.trailers[0].key;
+    window.open(
+      'https://www.youtube.com/embed/' + movie.trailers[0].key,
+      '_blank'
+    );
   }
 
   handleAddRemoveToFromLibrary() {
@@ -205,12 +192,6 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   back() {
-    this.persistDataService.removeItem('selected-movie');
-
-    let lastSelectedTab = localStorage.getItem('tab') || '';
-
-    this.router.navigateByUrl(lastSelectedTab, {
-      state: [this.pageUserWasLastOnBeforeViewingDetails],
-    });
+    this.location.back();
   }
 }

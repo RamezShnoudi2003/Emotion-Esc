@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, take } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SongsService {
   private readonly baseUrl = environment.apiUrl + 'music/';
+
   constructor(private readonly http: HttpClient) {}
 
   getMusicRecommendations(model: any): Observable<any> {

@@ -15,6 +15,7 @@ import { SweetAlertService } from '../../Services/sweet-alert.service';
 import { TabService } from '../../Services/tab.service';
 import { SongsService } from '../../Services/API/songs.service';
 import { NgIf } from '@angular/common';
+import { SpotifyService } from '../../Services/spotify.service';
 
 @Component({
   selector: 'app-login',
@@ -50,11 +51,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly languageService: LanguageService,
     private readonly router: Router,
     private readonly tabService: TabService,
     private readonly accountService: AccountService,
-    private readonly sweetAlertService: SweetAlertService
+    private readonly sweetAlertService: SweetAlertService,
+    private readonly spotifyService: SpotifyService
   ) {}
 
   ngOnDestroy(): void {
@@ -118,16 +119,17 @@ export class LoginComponent implements OnInit, OnDestroy {
         localStorage.setItem('token', JSON.stringify(token));
         this.accountService.updateLoginSubject(true);
 
+        this.spotifyService.setIsLinkedToSpotify(user.linkToSpotify);
+
         this.router.navigateByUrl('/home');
-        this.tabService.setSelectedTab('home');
+        // this.tabService.setSelectedTab('home');
+
         this.isLoginBtnLoading = false;
       },
       error: (serverError) => {
         this.isLoginBtnLoading = false;
       },
     });
-
-    // this.redirectToSpotifyLogin();
   }
 
   forgotPass() {
@@ -138,9 +140,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isEmailBtnLoading = true;
     let email = this.emailFormGroup.value['email'];
 
-    this.isEmailBtnLoading = false;
-    this.isEmailEntered = true;
-
     this.accountService.sendOtpToEmail(email).subscribe({
       next: (response: any) => {
         this.sweetAlertService.success(response.data.message);
@@ -148,6 +147,9 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.isEmailBtnLoading = false;
           this.isEmailEntered = true;
           this.resetToken = response.data.resetToken;
+
+          this.isEmailBtnLoading = false;
+          this.isEmailEntered = true;
         }
         console.log(response);
       },
@@ -183,6 +185,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
           this.router.navigateByUrl('/home');
           this.tabService.setSelectedTab('home');
+          this.spotifyService.setIsLinkedToSpotify(user.linkToSpotify);
 
           this.sweetAlertService.success(response.data.message);
           console.log(response);
@@ -204,24 +207,3 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.resetPasswordFormGroup.reset();
   }
 }
-
-// takeToResetPass() {
-//   const token =
-//     '6ce7c6bb7ca301874e4dded1967f5034fae571d923b1adbfe5c1d0672819d745';
-//   this.router.navigateByUrl(`/reset/${token}`);
-// }
-// // After successful login in your app, redirect to Spotify for login
-// redirectToSpotifyLogin() {
-//   const clientId = '9e299651fa6543618205a7bbeb29e944'; // Your Spotify client ID
-//   const redirectUri = 'http://localhost:4200/'; // Your redirect URI
-//   const scope =
-//     'user-read-private user-read-email streaming user-read-playback-state user-modify-playback-state'; // Permissions you need
-
-//   // Construct the Spotify OAuth URL
-//   const spotifyAuthUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${encodeURIComponent(
-//     scope
-//   )}`;
-
-//   // Redirect the user to Spotify for login
-//   window.location.href = spotifyAuthUrl;
-// }

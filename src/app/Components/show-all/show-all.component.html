@@ -17,6 +17,15 @@
         <div class="masked-next" (click)="next()"></div>
     </div>
 
+    <form [formGroup]="searchFormGroup">
+
+        <app-input *ngIf="type === 'favorite-songs'" type="search" placeholder="general.search" formControlName="search"
+            (enterPressed)="searchSongs()"></app-input>
+
+        <app-input *ngIf="type === 'favorite-movies'" type="search" placeholder="general.search"
+            formControlName="search" (enterPressed)="searchMovies()"></app-input>
+    </form>
+
 </div>
 
 <div class="flex-column-container">
@@ -37,6 +46,13 @@
 
     </div>
 
+    <div class="alert-icon-container" *ngIf="type=='songs' && !isLoading && tracks.length===0">
+
+        <div class="masked-alert"></div>
+        {{'general.noMoreData'|translate}}
+
+    </div>
+
     <div class="songs-container" *ngIf="type=='favorite-songs' && !isLoading && songItems.length!==0">
 
         <ng-container *ngFor="let track of songItems">
@@ -48,13 +64,13 @@
     </div>
 
 
-
-    <div class="alert-icon-container" *ngIf="type=='songs' && !isLoading && tracks.length===0">
+    <div class="alert-icon-container" *ngIf="type=='favorite-songs' && !isLoading && songItems.length===0">
 
         <div class="masked-alert"></div>
-        {{'general.noMoreData'|translate}}
+        {{message}}
 
     </div>
+
 
     <div class="movies-container" *ngIf="type=='movies' && !isLoading && movies.length!==0">
 
@@ -66,6 +82,12 @@
 
     </div>
 
+    <div class="alert-icon-container" *ngIf="type=='movies' && !isLoading && movies.length===0">
+
+        <div class="masked-alert"></div>
+        {{'general.noMoreData'|translate}}
+
+    </div>
 
     <div class="movies-container" *ngIf="type=='favorite-movies' && !isLoading && movieItems.length!==0">
 
@@ -77,10 +99,10 @@
 
     </div>
 
-    <div class="alert-icon-container" *ngIf="type=='movies' && !isLoading && movies.length===0">
+    <div class="alert-icon-container" *ngIf="type=='favorite-movies' && !isLoading && movieItems.length===0">
 
         <div class="masked-alert"></div>
-        {{'general.noMoreData'|translate}}
+        {{message}}
 
     </div>
 

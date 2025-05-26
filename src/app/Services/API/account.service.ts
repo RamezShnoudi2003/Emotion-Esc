@@ -3,7 +3,7 @@ import { Injectable, model } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable, of, take } from 'rxjs';
 import { PersistDataService } from '../persist-data.service';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -23,14 +23,8 @@ export class AccountService {
     private readonly persistDataService: PersistDataService
   ) {}
 
-  login(model: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}login`, model).pipe(take(1));
-  }
-
   startSignup(model: any) {
-    return this.http
-      .post(this.baseUrl + 'signup/start', model)
-      .pipe(map((response) => response));
+    return this.http.post(this.baseUrl + 'signup/start', model).pipe(take(1));
   }
 
   verifySignup(model: any) {
@@ -40,12 +34,62 @@ export class AccountService {
   resendSignup(email: string) {
     return this.http
       .get(this.baseUrl + `signup/resend?email=${email}`)
-      .pipe(map((res) => res));
+      .pipe(take(1));
   }
 
-  private checkLoginStatus(): boolean {
-    const user = localStorage.getItem('user');
-    return !!user;
+  sendOtpToEmail(email: string) {
+    return this.http
+      .post(this.baseUrl + `forget-password`, { email })
+      .pipe(take(1));
+  }
+
+  login(model: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}login`, model).pipe(take(1));
+  }
+
+  logout() {
+    localStorage.clear();
+    this.isLoggedInSubject.next(false);
+    this.persistDataService.clearData();
+    this.router.navigateByUrl('on-boarding');
+  }
+
+  updateProfile(model: any) {
+    return this.http.post(`${this.baseUrl}edit-profile`, model).pipe(take(1));
+  }
+
+  updatePassword(model: any) {
+    return this.http
+      .patch(this.baseUrl + `update-my-password`, model)
+      .pipe(take(1));
+  }
+
+  resetForgottenPassword(model: any, resetToken: string) {
+    return this.http
+      .patch(this.baseUrl + `reset-password/${resetToken}`, model)
+      .pipe(take(1));
+  }
+
+  loginToSpotify() {
+    return this.http.get(`${this.baseUrl}login-spotify`).pipe(take(1));
+  }
+
+  linkToSpotify(model: any) {
+    return this.http
+      .get(
+        `${this.baseUrl}link-spotify?code=${model.code}&state=${model.state}`
+      )
+      .pipe(take(1));
+  }
+
+  refreshSpotifyToken(refreshToken: string) {
+    return this.http
+      .post(`${this.baseUrl}refresh-spotify-token`, { refreshToken })
+      .pipe(take(1));
+  }
+
+  updateLoginSubject(loggedIn: boolean) {
+    this.isLoggedInSubject.next(loggedIn);
   }
 
   isUserLoggedIn(): Observable<boolean> {
@@ -57,36 +101,8 @@ export class AccountService {
     return this.isLoggedIn$;
   }
 
-  logout() {
-    localStorage.clear();
-    this.isLoggedInSubject.next(false);
-    this.persistDataService.clearData();
-    this.router.navigateByUrl('on-boarding');
-  }
-
-  updateLoginSubject(loggedIn: boolean) {
-    this.isLoggedInSubject.next(loggedIn);
-  }
-
-  updatePassword(model: any) {
-    return this.http
-      .patch(this.baseUrl + `update-my-password`, model)
-      .pipe(take(1));
-  }
-
-  updateProfile(model: any) {
-    return this.http.post(`${this.baseUrl}edit-profile`, model).pipe(take(1));
-  }
-
-  sendOtpToEmail(email: string) {
-    return this.http
-      .post(this.baseUrl + `forget-password`, { email })
-      .pipe(take(1));
-  }
-
-  resetForgottenPassword(model: any, resetToken: string) {
-    return this.http
-      .patch(this.baseUrl + `reset-password/${resetToken}`, model)
-      .pipe(take(1));
+  private checkLoginStatus(): boolean {
+    const user = localStorage.getItem('user');
+    return !!user;
   }
 }

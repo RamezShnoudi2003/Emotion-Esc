@@ -15,7 +15,7 @@
 .info-container {
     display: flex;
     flex-direction: column;
-    row-gap: 2rem;
+    row-gap: 1rem;
     padding: 2rem;
 }
 
@@ -24,19 +24,11 @@ img {
     height: auto;
 }
 
-.masked-no-image {
-    mask-image: url(/assets/Icons/no-image.svg);
-    -webkit-mask-image: url(/assets/Icons/no-image.svg);
-    background-color: var(--color-primary);
-    width: 50%;
+img.no-image {
+    width: 25%;
     height: auto;
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-position: center;
 }
+
 
 
 .sub-info-container {
@@ -82,7 +74,7 @@ img {
 
 .genre::before {
     content: "";
-    background-color: red;
+    background-color: var(--color-danger);
     display: inline-block;
     width: 0.8rem;
     height: 0.8rem;
@@ -91,12 +83,11 @@ img {
     margin-right: 0.2rem;
 }
 
-.masked-favorite {
-    mask-image: url(/assets/Icons/close.svg);
-    -webkit-mask-image: url(/assets/Icons/close.svg);
+.masked-favorite,
+.masked-favorite.added-to-faves {
     mask-size: cover;
     -webkit-mask-size: cover;
-    background-color: black;
+    background-color: var(--color-primary);
     width: 2rem;
     height: 2rem;
     cursor: pointer;
@@ -105,11 +96,15 @@ img {
 .masked-favorite {
     mask-image: url(/assets/Icons/favorite.svg);
     -webkit-mask-image: url(/assets/Icons/favorite.svg);
-}
 
+}
 
 .masked-favorite.added-to-faves {
     mask-image: url(/assets/Icons/favorite-filled.svg);
     -webkit-mask-image: url(/assets/Icons/favorite-filled.svg);
+}
 
+.masked-favorite:hover,
+.masked-favorite.added-to-faves:hover {
+    background-color: var(--color-danger)
 }

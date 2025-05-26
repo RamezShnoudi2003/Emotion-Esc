@@ -11,11 +11,12 @@ import {
 } from '@angular/core';
 import * as faceapi from 'face-api.js';
 import { ButtonComponent } from '../../UIComponents/button/button.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-webcam',
   standalone: true,
-  imports: [NgIf, ButtonComponent, NgStyle, NgClass],
+  imports: [NgIf, ButtonComponent, NgClass, TranslateModule],
   templateUrl: './webcam.component.html',
   styleUrl: './webcam.component.css',
 })

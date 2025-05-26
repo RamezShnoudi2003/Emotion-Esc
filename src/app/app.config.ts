@@ -4,12 +4,7 @@ import {
   provideZoneChangeDetection,
   isDevMode,
 } from '@angular/core';
-import {
-  provideRouter,
-  RouterModule,
-  withEnabledBlockingInitialNavigation,
-  withHashLocation,
-} from '@angular/router';
+import { provideRouter, RouterModule } from '@angular/router';
 
 import { routes } from './app.routes';
 import {
@@ -30,7 +25,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withHashLocation()),
+    provideRouter(routes),
     importProvidersFrom(
       TranslateModule.forRoot({
         loader: {

@@ -1,9 +1,8 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { TabService } from '../../Services/tab.service';
 import { AccountService } from '../../Services/API/account.service';
-import { filter } from 'rxjs';
 import { ButtonComponent } from '../button/button.component';
 import { LanguageService } from '../../Services/language.service';
 

@@ -2,7 +2,8 @@
   "homeComponent": {
     "home": "الرئيسية",
     "topSongs": "أفضل الاغاني اليوم",
-    "movieRecommendations": "اقتراحات الأفلام"
+    "movieRecommendations": "اقتراحات الأفلام",
+    "popularMovies": "الأفلام الشهيرة"
   },
   "songsComponent": {
     "songs": "الأغاني",
@@ -15,10 +16,12 @@
     "letsEsc": "لنهرب"
   },
   "moviesDetailsComponent": {
-    "description": "الوصف",
+    "description": "الوصف: ",
     "watchTrailer": "شاهد العرض الترويجي",
     "addToLibrary": "أضف إلى المكتبة",
-    "popularity": "الشعبية"
+    "popularity": "الشعبية",
+    "quickMoodShift": "لتعديل المزاج",
+    "movieDetails": "تفاصيل الفلم"
   },
   "libraryComponent": {
     "library": "المكتبة",
@@ -36,7 +39,8 @@
     "editProfile": "تعديل الملف الشخصي",
     "fullName": "الاسم الكامل",
     "resetPasswordTab": "تعديل كلمة المرور",
-    "profileTab": "تعديل الملف الشخصي"
+    "profileTab": "تعديل الملف الشخصي",
+    "linkSpotify": "ربط مع سبوتيفاي"
   },
   "onBoardingComponent": {
     "onBoarding": "التسجيل الأولي",
@@ -61,7 +65,8 @@
     "otp": "رمز التحقق",
     "enterOTP": "ادخل رمز التحقق",
     "newPassword": "كلمة المرور الجديدة",
-    "confirmPassword": "تأكيد كلمة المرور"
+    "confirmPassword": "تأكيد كلمة المرور",
+    "resetForgottenPassword": "إعادة تعيين كلمة المرور"
   },
   "signUpComponent": {
     "signUp": "إنشاء حساب",
@@ -92,11 +97,22 @@
     "detectEmotionAgain": "اكتشف العاطفة مرة أخرى ؟",
     "emotionsReshape": "حيث تُعاد تشكيل العواطف ! "
   },
+  "webcamComponent": {
+    "recapture": "إعادة الالتقاط",
+    "youLook": "تبدو",
+    "emotionNotCaptured": "لم نتمكن من التقاط مشاعرك،{{lineBreak}}يرجى المحاولة مرة أخرى.",
+    "continue": "استمرار"
+  },
+  "songPlayCardComponent": {
+    "playingNow": "يُشغَل الآن"
+  },
   "general": {
     "save": "تخزين",
     "showAll": "عرض الكل",
     "emotion": "العاطفة",
     "verify": "تحقق",
-    "noMoreData": "لا مزيد من البيانات"
+    "noMoreData": "لا مزيد من البيانات",
+    "enter": "أدخل",
+    "search": "بحث"
   }
 }

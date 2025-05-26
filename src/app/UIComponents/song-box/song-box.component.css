@@ -1,11 +1,15 @@
+.parent-container {
+    display: flex;
+}
+
 .container {
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
     padding: 0.5rem;
-    /* background-color: blue; */
     border-radius: 0.5rem;
     cursor: pointer;
+    flex-basis: 13rem;
 }
 
 

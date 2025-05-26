@@ -9,7 +9,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { InputComponent } from '../../UIComponents/input/input.component';
 import { ButtonComponent } from '../../UIComponents/button/button.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../Services/language.service';
 import { Router, RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { SweetAlertService } from '../../Services/sweet-alert.service';
@@ -53,7 +52,6 @@ export class SignupComponent implements OnInit, OnDestroy {
   constructor(
     private readonly accountService: AccountService,
     private readonly formBuilder: FormBuilder,
-    private readonly languageService: LanguageService,
     private readonly router: Router,
     private readonly swal: SweetAlertService
   ) {}
@@ -146,11 +144,10 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/home');
 
         this.isCodeEntered = true;
-
         this.isVerificationBtnLoading = false;
       },
       error: (serverError) => {
-        this.isCodeEntered = true;
+        this.isCodeEntered = false;
         this.isVerificationBtnLoading = false;
       },
     });

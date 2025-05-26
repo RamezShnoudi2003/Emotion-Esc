@@ -16,25 +16,43 @@
     <div class="playbar-container">
 
         <div class="buttons-container">
-            <div class="masked-shuffle"></div>
-            <div class="masked-prev"></div>
+            <!-- <div class="masked-shuffle"></div> -->
+            <div class="masked-prev" (click)="playPrev()"></div>
 
             <div class="play-btn-container">
-                <div class="masked-play"></div>
+                <div class="masked-play" *ngIf="!isSongPlaying" (click)="playPauseSong()"></div>
+                <div class="masked-pause" *ngIf="isSongPlaying" (click)="playPauseSong()"></div>
             </div>
 
-            <div class="masked-next"></div>
-            <div class="masked-order"></div>
+            <div class="masked-next" (click)="playNext()"></div>
+            <!-- <div class=" masked-order"></div> -->
         </div>
 
-        <div class="masked-progress-bar"></div>
+        <!-- Progress bar container -->
+        <div class="progress-container">
+            <input type="range" [value]="trackProgress" [max]="trackDuration" (change)="onSeek($event)"
+                class="progress-bar" />
+        </div>
 
     </div>
 
-    <div class="masked-favorite" (click)="handleAddRemoveToFromLibrary()"
-        [class.added-to-faves]="selectedSong.isSelected"></div>
+    <div class="volume-container">
+        <div class="masked-high" *ngIf="volume>=0.75"></div>
+        <div class="masked-medium" *ngIf="volume<0.75 && volume>=0.25"></div>
+        <div class="masked-low" *ngIf="volume<0.25 && volume>0"></div>
+        <div class="masked-mute" *ngIf="volume===0"></div>
 
-    <div class="masked-close" (click)="closeCard()"></div>
+        <input type="range" min="0" max="1" step="0.01" [value]="volume" (input)="onVolumeChange($event)"
+            class="volume-bar" />
+    </div>
+
+    <div class="close-add-btns-container">
+
+        <div class="masked-favorite" (click)="handleAddRemoveToFromLibrary()"
+            [class.added-to-faves]="selectedSong.isSelected"></div>
+
+        <div class="masked-close" (click)="closeCard()"></div>
+    </div>
 
 
 </div>

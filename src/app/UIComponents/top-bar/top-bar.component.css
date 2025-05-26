@@ -1,26 +1,26 @@
-.top-bar-container{
+.top-bar-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: 1rem;
-    box-shadow: 0 10px 10px rgba(0, 0, 0,0.5) ;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
 
     column-gap: 1rem;
 }
 
-.emotionEsc{
-font-size: 2rem;
-font-weight: 700;
-cursor: pointer;
+.emotionEsc {
+    font-size: 2rem;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 .tabs-container,
-.lang-container{
+.lang-container {
     background-color: var(--color-text);
     border-radius: 2rem;
-    
+
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -28,28 +28,28 @@ cursor: pointer;
 }
 
 
-.tab{
+.tab {
     padding: 0.5rem;
     cursor: pointer;
     transition: color 0.2s ease-in;
     border-radius: 5rem;
 }
 
-.tab.selected{
+.tab.selected {
     background-color: var(--color-primary);
     color: var(--color-text);
 }
 
-.tab.selected:hover{
+.tab.selected:hover {
     background-color: var(--color-primary);
     color: var(--color-text);
 }
 
-.tab:hover{
-background-color: var(--color-secondary-light);
+.tab:hover {
+    background-color: var(--color-secondary-light);
 }
 
-.detect-emotion-again-container{
+.detect-emotion-again-container {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -60,12 +60,12 @@ background-color: var(--color-secondary-light);
     text-wrap: nowrap;
 }
 
-.detect-emotion-again-container:hover{
-color: red;
+.detect-emotion-again-container:hover {
+    color: var(--color-danger);
 }
 
 
-.camera-background{
+.camera-background {
     background-color: var(--color-primary);
     border-radius: 100%;
     padding: 0.3rem;
@@ -76,7 +76,7 @@ color: red;
     -webkit-mask-image: url(/assets/Icons/camera.svg);
     width: 2rem;
     height: 2rem;
-    background-color: white;
+    background-color: var(--color-text);
     mask-size: cover;
     mask-repeat: no-repeat;
     -webkit-mask-size: cover;
@@ -87,7 +87,7 @@ color: red;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: black;
+    background-color: var(--color-primary);
     padding: 0.2rem;
     border-radius: 5rem;
 }
@@ -97,7 +97,7 @@ color: red;
     -webkit-mask-image: url(/assets/Icons/logout.svg);
     width: 2rem;
     height: 2rem;
-    background-color: white;
+    background-color: var(--color-text);
     mask-size: cover;
     mask-repeat: no-repeat;
     -webkit-mask-size: cover;
@@ -107,17 +107,14 @@ color: red;
 
 
 .lang-logout-container,
-.lang-button-container{
+.lang-button-container {
     display: flex;
     align-items: center;
     column-gap: 1rem;
 }
 
-.where-emotions-reshape{
+.where-emotions-reshape {
     padding: 0.2rem;
     font-size: 1.2rem;
     font-weight: 500;
 }
-
-
-

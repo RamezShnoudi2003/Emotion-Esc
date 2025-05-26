@@ -4,7 +4,6 @@ import { MovieBoxComponent } from '../../UIComponents/movie-box/movie-box.compon
 import { Router } from '@angular/router';
 import { MoviesService } from '../../Services/API/movies.service';
 import { PersistDataService } from '../../Services/persist-data.service';
-import { ButtonComponent } from '../../UIComponents/button/button.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -38,10 +37,6 @@ export class MoviesComponent implements OnInit {
         emotion = response;
       },
     });
-
-    // let emotion = this.persistDataService.getItem('emotion');
-    // console.log('Received emotion:', emotion);
-
     if (emotion) {
       this.emotion = emotion;
     }
@@ -69,19 +64,8 @@ export class MoviesComponent implements OnInit {
     });
   }
 
-  // showAll(type: string) {
-  //   // we set 'all-emotion' even tho
-  //   //  we already have 'emotion' saved in persistDataService
-  //   // because we remove all-emotion when leaving show-all screen
-  //   // but we wanna keep emotion
-  //   this.persistDataService.setItem('all-emotion', this.emotion);
-  //   this.router.navigate(['show-all'], { queryParams: { type } });
-  // }
-
   takeToDescription(item: any) {
-    this.persistDataService.setItem('selected-movie', item);
-    this.persistDataService.setItem('page', this.count); // to send page to details screen, so details screen can resend it to oninit of this componenet to return users the pagination that they were on
-    this.moviesService.takeToDescription(item);
+    this.moviesService.takeToDescription(item.id);
   }
 
   next() {

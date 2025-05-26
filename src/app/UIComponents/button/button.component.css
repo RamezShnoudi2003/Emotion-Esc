@@ -14,10 +14,10 @@ button {
     padding: 1rem;
     border-radius: 3rem;
     font-weight: 600;
-    border: none;
     cursor: pointer;
-    border: 2px solid var(--color-primary);
     width: 100%;
+    border: 2px solid transparent;
+
 }
 
 
@@ -56,7 +56,7 @@ button:disabled:hover {
     border: 2px solid var(--color-secondary);
 }
 
-.inner-btn-container{
+.inner-btn-container {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -65,8 +65,8 @@ button:disabled:hover {
 .spinner {
     width: 0.6rem;
     height: 0.6rem;
-    border: 3px solid black;
-    border-top: 3px solid white;
+    border: 3px solid var(--color-primary);
+    border-top: 3px solid var(--color-text);
     border-radius: 50%;
-    animation: spin 1s linear infinite;    
+    animation: spin 1s linear infinite;
 }

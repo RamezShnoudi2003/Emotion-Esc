@@ -1,10 +1,10 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { TabService } from '../../Services/tab.service';
 import { LanguageService } from '../../Services/language.service';
-import { filter, Observable } from 'rxjs';
+import { filter } from 'rxjs';
 import { AccountService } from '../../Services/API/account.service';
 import { ButtonComponent } from '../button/button.component';
 import { PersistDataService } from '../../Services/persist-data.service';
@@ -74,7 +74,6 @@ export class TopBarComponent implements OnInit {
         this.selectedLang = response;
       },
     });
-    // this.selectedLang = this.languageServie.getLastSetLanguage();
 
     this.getTab();
 

@@ -44,8 +44,4 @@ export class LanguageService {
 
     this.languageSubject.next(lang);
   }
-
-  // getLastSetLanguage() {
-  //   return localStorage.getItem('language') || 'en';
-  // }
 }

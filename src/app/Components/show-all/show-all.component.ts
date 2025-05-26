@@ -1,40 +1,44 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PersistDataService } from '../../Services/persist-data.service';
 import { SongsService } from '../../Services/API/songs.service';
-import { JsonPipe, NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { SongBoxComponent } from '../../UIComponents/song-box/song-box.component';
 import { MoviesService } from '../../Services/API/movies.service';
 import { MovieBoxComponent } from '../../UIComponents/movie-box/movie-box.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ButtonComponent } from '../../UIComponents/button/button.component';
 import { SongPlayService } from '../../Services/song-play.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { LibraryService } from '../../Services/API/library.service';
+import { SpotifyService } from '../../Services/spotify.service';
+import { Location } from '@angular/common';
+import { InputComponent } from '../../UIComponents/input/input.component';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-show-all',
   imports: [
     NgIf,
-    JsonPipe,
     NgFor,
     SongBoxComponent,
     MovieBoxComponent,
-    ButtonComponent,
     TranslateModule,
+    InputComponent,
+    ReactiveFormsModule,
   ],
   templateUrl: './show-all.component.html',
   styleUrl: './show-all.component.css',
 })
-export class ShowAllComponent implements OnInit, OnDestroy {
-  // emotion: string = '';
+export class ShowAllComponent implements OnInit {
   tracks: any[] = [];
   movies: any[] = [];
   isLoading: boolean = true;
   type: string = '';
   count: number = 1;
-  movieItems: any;
-  songItems: any;
+  movieItems: any[] = [];
+  songItems: any[] = [];
+  message: string = '';
 
+  searchFormGroup!: FormGroup<any>;
   constructor(
     private readonly persistDataService: PersistDataService,
     private readonly songsService: SongsService,
@@ -42,43 +46,24 @@ export class ShowAllComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly songPlayService: SongPlayService,
-    private readonly libraryService: LibraryService
+    private readonly libraryService: LibraryService,
+    private readonly spotifyService: SpotifyService,
+    private location: Location,
+    private readonly formBuilder: FormBuilder
   ) {}
 
-  ngOnDestroy(): void {
-    // this.persistDataService.removeItem('all-emotion');
-  }
-
   ngOnInit(): void {
+    this.initializeForm();
     this.type = String(this.activatedRoute.snapshot.queryParamMap.get('type'));
-
-    // this.emotion = this.persistDataService.getItem('all-emotion') || '';
-    // this.emotion = localStorage.getItem('emotion') || '';
 
     // if type of query param is songs
     if (this.type == 'songs') {
       // and pesistdataservice has an emotion saved in it
-      // if (this.emotion.length !== 0) {
-      // we get all songs based on mood
       this.getTodaysTopMusic(this.count);
-      // and pesistdataservice has no emotion saved in it
-      // } else {
-      // we get all normal songs
-      // this.getTodaysTopMusic();
-      // }
     }
     // if type of query param is movies
     else if (this.type == 'movies') {
-      // and pesistdataservice has an emotion saved in it
-      // if (this.emotion.length !== 0) {
-      // we get all movies based on mood
-      // this.getMovieRecommendations();
-      // }
-      // and pesistdataservice has no emotion saved in it
-      // else {
-      // we get all normal movies
       this.getPopularMovies(this.count);
-      // }
     } else if (this.type == 'favorite-movies') {
       this.getLibrary('movie');
     } else if (this.type == 'favorite-songs') {
@@ -86,21 +71,49 @@ export class ShowAllComponent implements OnInit, OnDestroy {
     }
   }
 
-  getLibrary(type: string) {
+  initializeForm() {
+    this.searchFormGroup = this.formBuilder.group({
+      search: '',
+    });
+  }
+
+  getLibrary(type: string, search: string = '') {
+    this.isLoading = true;
     let model = {
       type: type,
-      search: '',
+      search: search,
     };
 
     this.libraryService.getLibrary(model).subscribe({
       next: (response: any) => {
+        if (response.status === 'error') {
+          this.movieItems = [];
+          this.songItems = [];
+          this.isLoading = false;
+          this.message = response.message;
+          return;
+        }
+
         if (type === 'song') {
           this.songItems = response.data.items;
+
+          this.songItems.forEach((item: any) => {
+            item.name = item.title;
+            item.artists = [item.artistOrDirector];
+            item.images = [{ url: item.itemImage }];
+            item.uri = item.itemId;
+            // when selecting an item from library then by default its selected as favorites
+            item.isSelected = true;
+          });
+
+          this.spotifyService.trackList = this.songItems;
+
           console.log('songs ', this.songItems);
           this.isLoading = false;
         } else if (type === 'movie') {
           // call apis with the returned favorite movie ids to get their details
           this.movieItems = response.data.items;
+
           this.movieItems.forEach((item: any) => {
             item.releaseDate = item.releaseDate.split('T')[0];
           });
@@ -108,6 +121,9 @@ export class ShowAllComponent implements OnInit, OnDestroy {
 
           console.log('movies ', this.movieItems);
         }
+      },
+      error: (serverError) => {
+        this.isLoading = false;
       },
     });
   }
@@ -124,10 +140,24 @@ export class ShowAllComponent implements OnInit, OnDestroy {
     });
   }
 
+  searchSongs() {
+    let searchValue = this.searchFormGroup.value['search'];
+
+    this.getLibrary('song', searchValue);
+  }
+
+  searchMovies() {
+    let searchValue = this.searchFormGroup.value['search'];
+
+    this.getLibrary('movie', searchValue);
+  }
+
   getTodaysTopMusic(page: number) {
     this.songsService.getTodaysTopMusic(page).subscribe({
       next: (response: any) => {
         this.tracks = response.data.tracks;
+        this.spotifyService.trackList = this.tracks;
+
         this.isLoading = false;
       },
       error: (ServerError) => {
@@ -137,34 +167,42 @@ export class ShowAllComponent implements OnInit, OnDestroy {
   }
 
   takeToDescription(item: any) {
-    this.moviesService.takeToDescription(item);
+    if (this.type == 'movies') {
+      this.moviesService.takeToDescription(item.id);
+    } else {
+      let movieId = parseInt(item.itemId);
+      this.moviesService.takeToDescription(movieId);
+    }
   }
 
   playSong(song: any) {
-    // window.location.href = `https://open.spotify.com/track/${song.id}`;
-    if (!document.body.classList.contains('song-play-shown')) {
-      document.body.classList.add('song-play-shown');
+    if (this.type === 'favorite-songs') {
+      let model = {
+        name: song.title,
+        artists: [song.artistOrDirector],
+        images: [{ url: song.itemImage }],
+        uri: song.itemId,
+        // when selecting an item from library then by default its selected as favorites
+        isSelected: true,
+      };
+      song = model;
     }
 
-    // let model = {
-    //   song: song,
-    //   accessToken: this.token,
-    // };
-    // console.log('sent  model', model);
-    // this.songPlayService.setSong(model);
     this.songPlayService.setSong(song);
   }
 
   back() {
-    let lastScreenUserWasOn = this.persistDataService.getItem('screen') || '';
+    // let lastScreenUserWasOn = this.persistDataService.getItem('screen') || '';
 
-    let selectedMovie = this.persistDataService.getItem('selected-movie') || '';
-    if (lastScreenUserWasOn && selectedMovie) {
-      this.router.navigateByUrl(lastScreenUserWasOn, { state: selectedMovie });
-    } else {
-      let tab = localStorage.getItem('tab') || '';
-      this.router.navigateByUrl(tab);
-    }
+    // let selectedMovie = this.persistDataService.getItem('selected-movie') || '';
+    // if (lastScreenUserWasOn && selectedMovie) {
+    //   this.router.navigateByUrl(lastScreenUserWasOn, { state: selectedMovie });
+    // } else {
+    //   let tab = localStorage.getItem('tab') || '';
+    //   this.router.navigateByUrl(tab);
+    // }
+
+    this.location.back();
   }
 
   next() {

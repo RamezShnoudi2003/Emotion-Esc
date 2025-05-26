@@ -36,8 +36,7 @@
         <span class="emotion-form-title">EmotionEsc</span>
 
         <span class="sub-title">
-            Reset forgotten password
-        </span>
+            {{'loginComponent.resetForgottenPassword'|translate}} </span>
 
         <div [formGroup]="emailFormGroup">
 
@@ -47,7 +46,7 @@
                 (enterPressed)="enterEmail()"></app-input>
 
             <app-button *ngIf="!isEmailEntered" [isBusy]="isEmailBtnLoading"
-                [disabled]="isEmailBtnLoading||isEmailBtnDisabled" text="Enter" color="primary"
+                [disabled]="isEmailBtnLoading||isEmailBtnDisabled" text="general.enter" color="primary"
                 (buttonClick)="enterEmail()" type="button"></app-button>
 
             <div [formGroup]="resetPasswordFormGroup" *ngIf="isEmailEntered">
@@ -73,7 +72,3 @@
     </form>
 
 </div>
-
-
-<!-- 
-    <app-button type="submit" text="take to reset" color="primary" (buttonClick)="takeToResetPass()"></app-button>-->

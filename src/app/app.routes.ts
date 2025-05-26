@@ -12,15 +12,8 @@ import { SongsComponent } from './Components/songs/songs.component';
 import { authGuard } from './Guards/auth.guard';
 import { loginGuard } from './Guards/login.guard';
 import { ShowAllComponent } from './Components/show-all/show-all.component';
-import { ResetComponent } from './Components/reset/reset.component';
-import { resetGuard } from './Guards/reset.guard';
 
 export const routes: Routes = [
-  {
-    path: 'reset/:token',
-    component: ResetComponent,
-    canActivate: [resetGuard],
-  },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
   { path: 'sign-up', component: SignupComponent, canActivate: [loginGuard] },
@@ -38,7 +31,9 @@ export const routes: Routes = [
       { path: 'songs', component: SongsComponent },
       { path: 'movies', component: MoviesComponent },
       { path: 'show-all', component: ShowAllComponent },
-      { path: 'movie-details', component: MovieDetailsComponent },
+      { path: 'movie-details/:id', component: MovieDetailsComponent },
+
+      // { path: 'movie-details', component: MovieDetailsComponent },
       { path: 'lets-escape', component: LetsEscapeComponent },
       { path: 'library', component: LibraryComponent },
       { path: 'profile', component: ProfileComponent },

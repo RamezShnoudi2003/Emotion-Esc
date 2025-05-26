@@ -15,7 +15,6 @@ export class SweetAlertService {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       buttonsStyling: true,
-      // toast: true,
       background: 'var(--color-primary-light)',
       cancelButtonColor: 'var(--color-danger)',
       confirmButtonColor: 'var(--color-success)',
@@ -26,16 +25,15 @@ export class SweetAlertService {
 
   success(title: string) {
     Swal.fire({
-      position: 'bottom-end',
       icon: 'success',
       title: title,
       showConfirmButton: false,
       timer: 2500,
       allowEscapeKey: false,
       allowOutsideClick: false,
-      customClass: {
-        popup: 'small-swal-popup',
-      },
+      // customClass: {
+      //   popup: 'small-swal-popup',
+      // },
     });
   }
 
@@ -71,6 +69,7 @@ export class SweetAlertService {
       cancelButtonColor: 'var(--color-danger)',
       allowEscapeKey: false,
       allowOutsideClick: false,
+      reverseButtons: true,
       //   customClass: {
       //     popup: 'small-swal-popup',
       //   },

@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { SongPlayCardComponent } from '../../UIComponents/song-play-card/song-play-card.component';
-import { WebcamComponent } from '../webcam/webcam.component';
 import { SongBoxComponent } from '../../UIComponents/song-box/song-box.component';
 import { MovieBoxComponent } from '../../UIComponents/movie-box/movie-box.component';
 import { NgFor, NgIf } from '@angular/common';
 import { MoviesService } from '../../Services/API/movies.service';
 import { SongsService } from '../../Services/API/songs.service';
-import { PersistDataService } from '../../Services/persist-data.service';
 import { SongPlayService } from '../../Services/song-play.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ButtonComponent } from '../../UIComponents/button/button.component';
 import { LibraryService } from '../../Services/API/library.service';
+import { SpotifyService } from '../../Services/spotify.service';
 
 @Component({
   selector: 'app-home',
@@ -39,11 +37,11 @@ export class HomeComponent implements OnInit {
     private readonly songsService: SongsService,
     private readonly songPlayService: SongPlayService,
     private readonly router: Router,
-    private readonly libraryService: LibraryService
+    private readonly libraryService: LibraryService,
+    private readonly spotifyService: SpotifyService
   ) {}
 
   ngOnInit(): void {
-    // this.verifySpotifyAccount();
     this.getPopularMovies();
     this.getTodaysTopMusic();
   }
@@ -63,13 +61,12 @@ export class HomeComponent implements OnInit {
   }
 
   takeToDescription(item: any) {
-    this.moviesService.takeToDescription(item);
+    // localStorage.setItem('selected-movie', JSON.stringify(item));
+
+    this.moviesService.takeToDescription(item.id);
   }
 
   playSong(song: any) {
-    if (!document.body.classList.contains('song-play-shown')) {
-      document.body.classList.add('song-play-shown');
-    }
     this.songPlayService.setSong(song);
   }
 
@@ -79,6 +76,7 @@ export class HomeComponent implements OnInit {
     this.songsService.getTodaysTopMusic(page).subscribe({
       next: (response: any) => {
         this.tracks = response.data.tracks;
+        this.spotifyService.trackList = this.tracks;
 
         let model = {
           type: 'song',
@@ -121,24 +119,4 @@ export class HomeComponent implements OnInit {
   showAll(type: string) {
     this.router.navigate(['show-all'], { queryParams: { type } });
   }
-
-  // verifySpotifyAccount() {
-  //   let token = localStorage.getItem('spotify_access_token') || '';
-  //   fetch('https://api.spotify.com/v1/me', {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`, // Correct Bearer Token format
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log('User Info:', data);
-  //       if (data.product === 'premium') {
-  //         console.log('✅ Premium account detected.');
-  //       } else {
-  //         console.error(
-  //           '❌ This account is not Premium. Upgrade to use the Web Playback SDK.'
-  //         );
-  //       }
-  //     });
-  // }
 }

@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { SongBoxComponent } from '../../UIComponents/song-box/song-box.component';
 import { NgFor, NgIf } from '@angular/common';
 import { PersistDataService } from '../../Services/persist-data.service';
-import { SongPlayCardComponent } from '../../UIComponents/song-play-card/song-play-card.component';
 import { SongPlayService } from '../../Services/song-play.service';
 import { SongsService } from '../../Services/API/songs.service';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '../../UIComponents/button/button.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../../Services/language.service';
 import { LibraryService } from '../../Services/API/library.service';
+import { SpotifyService } from '../../Services/spotify.service';
 
 @Component({
   selector: 'app-songs',
@@ -20,8 +19,6 @@ import { LibraryService } from '../../Services/API/library.service';
   styleUrls: ['./songs.component.css'],
 })
 export class SongsComponent implements OnInit {
-  // token: string = '';
-
   isSongsLoading: boolean = false;
   emotion: string = '';
   tracks: any[] = [];
@@ -34,7 +31,8 @@ export class SongsComponent implements OnInit {
     private readonly songsService: SongsService,
     private readonly router: Router,
     private readonly languageService: LanguageService,
-    private readonly libraryService: LibraryService
+    private readonly libraryService: LibraryService,
+    private readonly spotifyService: SpotifyService
   ) {
     this.languageService.language$.subscribe({
       next: (response: string) => {
@@ -58,15 +56,6 @@ export class SongsComponent implements OnInit {
     this.getMusicRecommendations(this.count);
   }
 
-  // showAll(type: string) {
-  //   // we set 'all-emotion' even tho
-  //   //  we already have 'emotion' saved in persistDataService
-  //   // because we remove all-emotion when leaving show-all screen
-  //   // but we wanna keep emotion
-  //   this.persistDataService.setItem('all-emotion', this.emotion);
-  //   this.router.navigate(['show-all'], { queryParams: { type } });
-  // }
-
   getMusicRecommendations(page: number) {
     this.isSongsLoading = true;
 
@@ -81,6 +70,7 @@ export class SongsComponent implements OnInit {
       next: (response: any) => {
         console.log('get music recommendations ', response);
         this.tracks = response.data.tracks;
+        this.spotifyService.trackList = this.tracks;
 
         let model = {
           type: 'song',
@@ -110,7 +100,6 @@ export class SongsComponent implements OnInit {
           },
         });
 
-        // this.token = response.data.accessToken;
         this.isSongsLoading = false;
       },
       error: (serverError) => {
@@ -120,17 +109,6 @@ export class SongsComponent implements OnInit {
   }
 
   playSong(song: any) {
-    // window.location.href = `https://open.spotify.com/track/${song.id}`;
-    if (!document.body.classList.contains('song-play-shown')) {
-      document.body.classList.add('song-play-shown');
-    }
-
-    // let model = {
-    //   song: song,
-    //   accessToken: this.token,
-    // };
-    // console.log('sent  model', model);
-    // this.songPlayService.setSong(model);
     this.songPlayService.setSong(song);
   }
 

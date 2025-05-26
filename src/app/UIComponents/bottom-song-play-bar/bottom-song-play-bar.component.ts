@@ -1,15 +1,15 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SongPlayService } from '../../Services/song-play.service';
 import { SpotifyService } from '../../Services/spotify.service';
-import { ButtonComponent } from '../button/button.component';
 import { LibraryService } from '../../Services/API/library.service';
 import { AccountService } from '../../Services/API/account.service';
 import { Subscription } from 'rxjs';
+import { SweetAlertService } from '../../Services/sweet-alert.service';
 
 @Component({
   selector: 'app-bottom-song-play-bar',
-  imports: [NgIf, NgFor, ButtonComponent],
+  imports: [NgIf],
   templateUrl: './bottom-song-play-bar.component.html',
   styleUrl: './bottom-song-play-bar.component.css',
 })
@@ -17,14 +17,21 @@ export class BottomSongPlayBarComponent implements OnInit, OnDestroy {
   addedToFavorites: boolean = false;
   isLoggedIn: boolean = false;
   private songSubscription$!: Subscription;
+  trackProgress: number = 0;
+  trackDuration: number = 0;
+  progressInterval: any; // interval timer
+  accessToken: string = '';
   // Initial value to prevent undefined errors
   selectedSong: any = { isSelected: false };
+
+  isSongPlaying: boolean = false;
 
   constructor(
     private readonly songPlayService: SongPlayService,
     private readonly spotifyService: SpotifyService,
     private readonly libraryService: LibraryService,
-    private readonly accountService: AccountService
+    private readonly accountService: AccountService,
+    private readonly sweetAlertService: SweetAlertService
   ) {}
 
   ngOnDestroy(): void {
@@ -34,6 +41,14 @@ export class BottomSongPlayBarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.spotifyService.trackProgress$.subscribe((progress) => {
+      this.trackProgress = progress;
+    });
+
+    this.spotifyService.trackDuration$.subscribe((duration) => {
+      this.trackDuration = duration;
+    });
+
     this.accountService.isUserLoggedIn().subscribe({
       next: (response: boolean) => {
         this.isLoggedIn = response;
@@ -50,13 +65,50 @@ export class BottomSongPlayBarComponent implements OnInit, OnDestroy {
         if (response) {
           this.selectedSong = response;
           console.log('model in play card  ', response);
-          // console.log('songggggg ', response);
-          // let token = this.selectedSong.accessToken;
-          // this.spotifyService.initializeSpotifyPlayer(this.selectedSong);
-          // this.spotifyService.playSong(this.selectedSong.song.id);
+          this.isSongPlaying = true;
+
+          console.log('songggggg ', this.selectedSong);
+
+          let user: any = localStorage.getItem('user');
+
+          user = JSON.parse(user);
+
+          let spotify: any = user.spotify;
+
+          if (!spotify) {
+            this.sweetAlertService.error('Please link your account to Spotify');
+            return;
+          }
+
+          if (!document.body.classList.contains('song-play-shown')) {
+            document.body.classList.add('song-play-shown');
+          }
+
+          console.log('spotifyyyyyyyyyyyyy', spotify);
+          console.log(user);
+
+          if (Date.now() > new Date(spotify.tokenExpiresAt).getTime()) {
+            let refreshToken = spotify.refreshToken;
+
+            this.accountService.refreshSpotifyToken(refreshToken).subscribe({
+              next: (response: any) => {
+                let user = response.data.user;
+                localStorage.setItem('user', JSON.stringify(user));
+                this.accessToken = response.data.user.spotify.accessToken;
+                this.handleSpotifyPlay(this.selectedSong, this.accessToken);
+              },
+            });
+          } else {
+            this.accessToken = spotify.accessToken;
+            this.handleSpotifyPlay(this.selectedSong, this.accessToken);
+          }
         }
       },
     });
+  }
+
+  handleSpotifyPlay(selectedSong: any, accessToken: string) {
+    this.spotifyService.handleSpotifyPlay(selectedSong, accessToken);
   }
 
   handleAddRemoveToFromLibrary() {
@@ -82,6 +134,7 @@ export class BottomSongPlayBarComponent implements OnInit, OnDestroy {
     this.libraryService.addItemToLibrary(model).subscribe({
       next: (response: any) => {
         console.log(response);
+        this.libraryService.updateaddedRemovedSongFromLibraryTrigger(true);
       },
     });
   }
@@ -92,11 +145,57 @@ export class BottomSongPlayBarComponent implements OnInit, OnDestroy {
     this.libraryService.removeItemFromLibrary(this.selectedSong.uri).subscribe({
       next: (response: any) => {
         console.log(response);
+        this.libraryService.updateaddedRemovedSongFromLibraryTrigger(true);
       },
     });
   }
 
+  playNext() {
+    this.selectedSong = this.spotifyService.nextTrack();
+    this.isSongPlaying = true;
+  }
+
+  playPrev() {
+    this.selectedSong = this.spotifyService.prevTrack();
+    this.isSongPlaying = true;
+  }
+
+  playPauseSong() {
+    if (this.isSongPlaying) {
+      this.spotifyService.stopSong();
+    } else {
+      this.spotifyService.resumePlayback();
+    }
+
+    this.isSongPlaying = !this.isSongPlaying;
+  }
   closeCard() {
     document.body.classList.remove('song-play-shown');
+    this.spotifyService.stopSong();
+    this.isSongPlaying = true;
+  }
+
+  onSeek(event: any): void {
+    const seekPosition = event.target.value;
+    if (this.spotifyService.player && this.spotifyService.isPlayerReady) {
+      this.spotifyService.player.seek(seekPosition).then(() => {
+        this.trackProgress = seekPosition;
+      });
+    }
+  }
+
+  formatTime(ms: number): string {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+  }
+
+  volume: number = 0.5; // default volume (50%)
+
+  onVolumeChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).valueAsNumber;
+    this.volume = value;
+    this.spotifyService.setVolume(value);
   }
 }

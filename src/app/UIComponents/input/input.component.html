@@ -1,12 +1,12 @@
 <ng-container *ngIf="type !== 'tel'; else telInput">
 
-    <div class="input-container">
+    <div class="input-container" [class.search]="type=='search'">
         <label>{{label|translate}}</label>
         <input [disabled]="disabled" value="{{text}}" type="{{type}}" placeholder="{{placeholder|translate}}"
             (input)="onInputChange($event)" (keydown)="onKeyDown($event)">
     </div>
 
-    <span class="validation-container">
+    <span class="validation-container" *ngIf="type!=='search'">
 
         <span class="validation-text" *ngIf="ngControl.control?.dirty && this.ngControl.control?.errors?.['required']">
             Field Required

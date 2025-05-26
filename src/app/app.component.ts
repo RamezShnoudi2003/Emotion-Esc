@@ -1,16 +1,14 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { TopBarComponent } from './UIComponents/top-bar/top-bar.component';
 import { BottomBarComponent } from './UIComponents/bottom-bar/bottom-bar.component';
 import { LanguageService } from './Services/language.service';
 import { AccountService } from './Services/API/account.service';
-import { Observable } from 'rxjs';
 import { SongPlayCardComponent } from './UIComponents/song-play-card/song-play-card.component';
 import { BottomSongPlayBarComponent } from './UIComponents/bottom-song-play-bar/bottom-song-play-bar.component';
 import { SpotifyService } from './Services/spotify.service';
 import { PersistDataService } from './Services/persist-data.service';
-import { TabService } from './Services/tab.service';
-import { NgIf } from '@angular/common';
+import { MoviesService } from './Services/API/movies.service';
 
 @Component({
   selector: 'app-root',
@@ -20,61 +18,112 @@ import { NgIf } from '@angular/common';
     BottomBarComponent,
     SongPlayCardComponent,
     BottomSongPlayBarComponent,
-    NgIf,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'EmotionEsc';
 
-  player: any;
-
-  // isLoggedIn: boolean = false;
-
-  // @HostListener('window:popstate', ['$event'])
-  // onPopState(event: Event) {
-  //   let tab = localStorage.getItem('tab') || 'home';
-
-  //   this.tabService.setSelectedTab(tab);
-  // }
-  token: any;
   constructor(
     private readonly languageService: LanguageService,
     private readonly router: Router,
     private readonly persistDataService: PersistDataService,
     private readonly accountService: AccountService,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly spotifyService: SpotifyService,
+    private readonly movieService: MoviesService
   ) {}
 
+  ngAfterViewInit(): void {
+    // let movie: any = localStorage.getItem('selected-movie');
+    // movie = JSON.parse(movie);
+    // console.log(movie);
+    // if (movie) {
+    //   this.movieService.takeToDescription(movie.id);
+    // }
+  }
+
   ngOnInit(): void {
+    const originalFetch = window.fetch;
+    window.fetch = async function (input, init) {
+      const url =
+        typeof input === 'string'
+          ? input
+          : input instanceof URL
+          ? input.toString()
+          : input.url;
+
+      // If this is a request to Spotify's analytics endpoint, handle specially
+      if (
+        url.includes('cpapi.spotify.com') ||
+        url.includes('event/item_before_load')
+      ) {
+        try {
+          const response = await originalFetch(input, init);
+
+          // If we get a 404 or 400, return a fake successful response
+          if (response.status === 404 || response.status === 400) {
+            console.log(
+              `Intercepted ${response.status} response for ${url.split('?')[0]}`
+            );
+            return new Response(JSON.stringify({ success: true }), {
+              status: 200,
+              headers: { 'Content-Type': 'application/json' },
+            });
+          }
+          return response;
+        } catch (error) {
+          console.log(`Intercepted fetch error for ${url.split('?')[0]}`);
+          // Return a fake successful response instead of throwing
+          return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        }
+      }
+
+      // Pass through normal requests
+      return originalFetch(input, init);
+    };
+
     this.languageFactory();
+    let user: any = localStorage.getItem('user') || '{}';
+    user = JSON.parse(user);
+
+    let isSpotifyBtnClicked = localStorage.getItem('isSpotifyBtnClicked');
+
+    if (isSpotifyBtnClicked === 'true') {
+      //  add a check so this is not called on profile and when spotify button is clicked
+      if (window.location.pathname.includes('profile')) {
+        console.log(window.location.search.split('&'));
+        let code = window.location.search.split('&')[0];
+        code = code.split('=')[1];
+        console.log(code);
+
+        let state = window.location.search.split('&')[1];
+        state = state.split('=')[1];
+        console.log(state);
+
+        let model = {
+          code: code,
+          state: state,
+        };
+
+        this.accountService.linkToSpotify(model).subscribe({
+          next: (response: any) => {
+            console.log('link to spotify ', response);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+            this.spotifyService.setIsLinkedToSpotify(true);
+
+            localStorage.setItem('isSpotifyBtnClicked', 'false');
+          },
+        });
+      }
+    }
+
+    this.spotifyService.setIsLinkedToSpotify(user.linkToSpotify);
 
     this.persistDataService.restoreEmotion();
-
-    // this.accountService.isUserLoggedIn().subscribe({
-    //   next: (response: any) => {
-    //     this.isLoggedIn = response;
-    //   },
-    // });
-
-    // console.log('urlll ', window.location.pathname.includes('reset'));
-
-    // // If the path includes 'reset', fetch the token from the route
-    // if (window.location.pathname.includes('reset')) {
-    //   this.token = window.location.search.split('=').at(1);
-    //   if (this.token) {
-    //     this.router.navigateByUrl(`/reset/${this.token}`);
-    //     console.log(this.token);
-    //   }
-    // }
-    // this.handleSpotify();
-    // this.spotifyService.initializeSpotifyPlayer();
-
-    // Check if we have the access token in the URL hash
-    // this.spotifyService.getAccessTokenFromUrl();
-
-    // Initialize the Spotify Player
   }
 
   isOnBoardingOrLoginOrSignupScreenActive() {
@@ -95,76 +144,3 @@ export class AppComponent implements OnInit {
     }
   }
 }
-
-// handleSpotify() {
-//   let spotifyToken = localStorage.getItem('spotify_access_token');
-
-//   if (!spotifyToken) {
-//     // Capture the code from the query parameters after redirect from spotify
-//     const urlParams = new URLSearchParams(window.location.search);
-//     const authorizationCode = urlParams.get('code');
-
-//     // Check if the authorization code exists
-//     if (authorizationCode) {
-//       // Store the code in localStorage
-//       // localStorage.setItem('spotify_auth_code', authorizationCode); // Use sessionStorage if you prefer
-//       this.exchangeCodeForToken(authorizationCode);
-//     } else {
-//       console.error('Authorization code not found in the URL');
-//     }
-//   } else {
-//     this.spotifyService.initializeSpotifyPlayer().then((res) => {
-//       console.log('initialization result ', res);
-//     });
-//   }
-// }
-
-// // Function to exchange the authorization code for an access token
-// exchangeCodeForToken(authorizationCode: string): void {
-//   const clientId = '9e299651fa6543618205a7bbeb29e944'; // Your Spotify Client ID
-//   const clientSecret = '6c1a9aac7c244315969b9467ec81d526'; // Your Spotify Client Secret
-//   const redirectUri = 'http://localhost:4200/'; // The same redirect URI used in the authorization request
-
-//   // Spotify token endpoint
-//   const tokenEndpoint = 'https://accounts.spotify.com/api/token';
-
-//   // Prepare the request body
-//   const body = new URLSearchParams();
-//   body.append('grant_type', 'authorization_code');
-//   body.append('code', authorizationCode);
-//   body.append('redirect_uri', redirectUri);
-
-//   // Prepare the headers, including Basic Authorization using client_id and client_secret
-//   const headers = new Headers();
-//   headers.append(
-//     'Authorization',
-//     'Basic ' + btoa(clientId + ':' + clientSecret)
-//   );
-//   headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-//   // Send the POST request to Spotify to exchange the code for tokens
-//   fetch(tokenEndpoint, {
-//     method: 'POST',
-//     body: body,
-//     headers: headers,
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       if (data.access_token) {
-//         console.log('Access Token:', data.access_token);
-//         // Store the access token in localStorage or sessionStorage for future use
-//         localStorage.setItem('spotify_access_token', data.access_token);
-
-//         this.spotifyService.initializeSpotifyPlayer().then((res) => {
-//           console.log('initialization result ', res);
-//         });
-
-//         // You can now use this token to make authorized Spotify API requests
-//       } else {
-//         console.error('Failed to exchange code for access token:', data);
-//       }
-//     })
-//     .catch((error) => {
-//       console.error('Error during token exchange:', error);
-//     });
-// }

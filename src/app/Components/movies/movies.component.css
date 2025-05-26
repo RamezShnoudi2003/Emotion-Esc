@@ -1,4 +1,4 @@
-.title-show-container{
+.title-show-container {
     position: sticky;
     top: 0%;
     left: 0%;
@@ -7,93 +7,56 @@
 
 .movies-container {
     display: grid;
-    /* grid-template-columns: repeat(5,1fr) ; */
-    overflow: unset;  
+    overflow: unset;
     overflow-x: auto;
 }
 
 /* media query  */
 
 @media only screen and (min-width:200px)and (max-width:315px) {
-  
     .movies-container {
-        
-        grid-template-columns: repeat(1,1fr) ;
-        
-          
+        grid-template-columns: repeat(1, 1fr);
     }
-    
 }
+
 @media only screen and (min-width:315px)and (max-width:470px) {
-  
     .movies-container {
-        
-        grid-template-columns: repeat(2,1fr) ;
-        
-
-          
+        grid-template-columns: repeat(2, 1fr);
     }
-    
 }
-@media only screen and (min-width:470px)and (max-width:600px) {
-  
-    .movies-container {
-        
-        grid-template-columns: repeat(3,1fr) ;
-        
 
-          
+@media only screen and (min-width:470px)and (max-width:600px) {
+    .movies-container {
+        grid-template-columns: repeat(3, 1fr);
     }
-    
 }
 
 
 /* Small screens (600px to 768px, larger phones and small tablets) */
 @media only screen and (min-width: 600px) and (max-width: 768px) {
-
     .movies-container {
-        
-        grid-template-columns: repeat(3,1fr) ;
-        
 
-          
+        grid-template-columns: repeat(3, 1fr);
     }
-    
- 
 }
 
 /* Medium screens (769px to 991px, tablets and small laptops) */
 @media only screen and (min-width: 768px) and (max-width: 992px) {
     .movies-container {
-        
-        grid-template-columns: repeat(4,1fr) ;
-        
-
+        grid-template-columns: repeat(4, 1fr);
     }
-    
 }
 
 /* Large screens (992px to 1199px, laptops) */
 @media only screen and (min-width: 992px) and (max-width: 1200px) {
-   
     .movies-container {
-        
-        grid-template-columns: repeat(5,1fr) ;
-        
-
-          
+        grid-template-columns: repeat(5, 1fr);
     }
-    
-    
-
 }
 
 /* Extra large screens (1200px and above, desktops and large devices) */
 @media only screen and (min-width: 1200px) {
     .movies-container {
-        grid-template-columns: repeat(6,1fr) ;
-        
-
-          
+        grid-template-columns: repeat(6, 1fr);
     }
 }
